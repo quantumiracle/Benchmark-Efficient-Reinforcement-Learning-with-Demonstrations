@@ -251,7 +251,7 @@ def main_retrain(args, extra_args,save_path):
     model, env = retrain(args, extra_args,save_path)
     model.save(save_path)
 
-    env.close()
+    # env.close()
 
 
 if __name__ == '__main__':
