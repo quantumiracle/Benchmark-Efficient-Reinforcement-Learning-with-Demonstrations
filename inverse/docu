@@ -1,0 +1,17 @@
+Is inverse dynamics able to process the complicated situation, when the reward map is not monotonous or even not convex?
+
+inverse dynamics only provide straight line path? then it cannot come round sth. 
+
+link length from real world to screen *1000?
+
+tanh and sigmoid seem not work, leaky relu is better than relu; batch_norm has similar effects as tanh and sigmoid
+
+data.p has more than 1500 batches, data1.p has more than 6000 batches, with each batch comtaining 100 samples.
+
+data2.p has batches, each batch with 50 samples, and 10 samples for each goal episode(data.p, data1.p is 50 for each goal).
+
+data3.p has 50 samples per batch, 10 samples for each goal episode, same initial state [0,0,0] for each episode. 6000 batches. 
+
+data4.p 50,10,[0,0,0],20000 batches
+
+joint_angles in inverse_kinematics is different in scale with the one in predict(origin reacher demo), their contribution to visualization is different! inverse_kinematics=screen_size*predict in contribution to visualization, therefore to use properly action in predict, needs to time screen_size then added to old joint_angles, as the values in predict should be times screensize to have same effects!

@@ -1,0 +1,46 @@
+copy:
+python -m baselines.run --alg=ddpg --env=HalfCheetah-v2 --num_timesteps=1e6
+
+python -m baselines.run --alg=ddpg --num_timesteps=1e6
+
+dzh:
+python -m run --alg=ddpg --num_timesteps=1e6 --save_path=~/models/ddpg
+
+on cloud:
+export OPENAI_LOG_FORMAT=stdout,csv,tensorboard
+export OPENAI_LOGDIR=.log
+python3 -m baselines.run --alg=ddpg --num_timesteps=1e6 --save_path=~/models/ddpg
+tensorboard --logdir=$OPENAI_LOGDIR
+
+python3 -m run --alg=ddpg --num_timesteps=1e6 --save_path=~/models/ddpg
+
+
+####wrong action####
+17160 ddpg
+scp -P 10022 xiaoyang@182.148.14.55:./trans/ddpg/ddpg.png ./ 
+
+12552 lr*10  ddpg_lr
+
+14534 ddpg_nn layer 4, size 200, origin lr
+
+19099 ddpg_new newplot, para0.02, epoch env reset..
+#######
+
+23498 dzh right action, dzh file 
+
+ddpg31:
+
+24277 dzh1 4*1 
+
+24441 dqn ac/pr 4*1 correct RL_brain
+
+24606 dzh_cr cr0.25 instead of 0.1 in dzh
+
+25630 dzh_no para_noise 0.2 instead of 0.02 above
+
+14795 dzh1 4*1 new difference reward
+
+29285 dzh1 1*1 new reward
+
+
+

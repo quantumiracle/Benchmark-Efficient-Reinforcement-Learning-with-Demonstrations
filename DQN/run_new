@@ -1,0 +1,3 @@
+python -m run --alg=ddpg --num_timesteps=1e6 --train
+python -m run --alg=ddpg --num_timesteps=1e6 --test
+python -m run --alg=ddpg --num_timesteps=1e6 --retrain

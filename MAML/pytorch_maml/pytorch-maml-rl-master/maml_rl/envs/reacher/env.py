@@ -1,0 +1,226 @@
+import pygame
+import numpy as np
+import math
+import time
+from gym.spaces.box import Box
+
+
+class Reacher:
+    def __init__(self):
+        # Global variables
+        self.screen_size = 1000
+        self.link_lengths = [200, 140, 100]
+        self.joint_angles = [0, 0, 0]
+        self.num_actions=3  # equals to number of joints - 1
+        self.num_observations= (len(joint_angles)+1+1)*2 # x,y coordinates of (len(joint_angles)+1) joints and 1 target
+        self.observation_space=np.array(self.num_observations*[0])
+        self.action_space=np.array(self.num_actions*[0])
+        self.L = 8 # distance from target to get reward 2
+
+        # The main entry point
+        self.screen = pygame.display.set_mode((self.screen_size, self.screen_size))
+        pygame.display.set_caption("Reacher")
+        self.is_running = 1
+        self.target_pos=[self.screen_size*3/4, self.screen_size/4]
+
+
+    # Function to compute the transformation matrix between two frames
+    def compute_trans_mat(self, angle, length):
+        cos_theta = math.cos(math.radians(angle))
+        sin_theta = math.sin(math.radians(angle))
+        dx = -length * sin_theta
+        dy = length * cos_theta
+        T = np.array([[cos_theta, -sin_theta, dx], [sin_theta, cos_theta, dy], [0, 0, 1]])
+        return T
+
+
+    # Function to draw the current state of the world
+    def draw_current_state(self, ):
+        # First link in world coordinates
+        # print(self.joint_angles)
+        T_01 = self.compute_trans_mat(self.joint_angles[0], self.link_lengths[0])
+        origin_1 = np.dot(T_01, np.array([0, 0, 1]))
+        p0 = [0, 0]
+        p1 = [origin_1[0], -origin_1[1]]  # the - is because the y-axis is opposite in world and image coordinates
+        # Second link in world coordinates
+        T_12 = self.compute_trans_mat(self.joint_angles[1], self.link_lengths[1])
+        origin_2 = np.dot(T_01, np.dot(T_12, np.array([0, 0, 1])))
+        p2 = [origin_2[0], -origin_2[1]]  # the - is because the y-axis is opposite in world and image coordinates
+        # Third link in world coordinates
+        T_23 = self.compute_trans_mat(self.joint_angles[2], self.link_lengths[2])
+        origin_3 = np.dot(T_01, np.dot(T_12, np.dot(T_23, np.array([0, 0, 1]))))
+        p3 = [origin_3[0], -origin_3[1]]  # the - is because the y-axis is opposite in world and image coordinates
+        # Compute the screen coordinates
+        p0_u = int(0.5 * self.screen_size + p0[0])
+        p0_v = int(0.5 * self.screen_size + p0[1])
+        p1_u = int(0.5 * self.screen_size + p1[0])
+        p1_v = int(0.5 * self.screen_size + p1[1])
+        p2_u = int(0.5 * self.screen_size + p2[0])
+        p2_v = int(0.5 * self.screen_size + p2[1])
+        p3_u = int(0.5 * self.screen_size + p3[0])
+        p3_v = int(0.5 * self.screen_size + p3[1])
+        # Draw
+        self.screen.fill((0, 0, 0))
+        pygame.draw.line(self.screen, (255, 255, 255), [p0_u, p0_v], [p1_u, p1_v], 5)
+        pygame.draw.line(self.screen, (255, 255, 255), [p1_u, p1_v], [p2_u, p2_v], 5)
+        pygame.draw.line(self.screen, (255, 255, 255), [p2_u, p2_v], [p3_u, p3_v], 5)
+        pygame.draw.circle(self.screen, (0, 255, 0), [p0_u, p0_v], 10)
+        pygame.draw.circle(self.screen, (0, 0, 255), [p1_u, p1_v], 10)
+        pygame.draw.circle(self.screen, (0, 0, 255), [p2_u, p2_v], 10)
+        pygame.draw.circle(self.screen, (255, 0, 0), [p3_u, p3_v], 10)
+        
+        pygame.draw.circle(self.screen, (255, 255, 0), np.array(self.target_pos).astype(int), 10)
+        # Flip the display buffers to show the current rendering
+        pygame.display.flip()
+        return [p0_u,p0_v,p1_u,p1_v,p2_u,p2_v,p3_u,p3_v]
+    
+    def reset(self,):
+        self.joint_angles = [0, 0, 0]
+        self.screen = pygame.display.set_mode((self.screen_size, self.screen_size))
+        pygame.display.set_caption("Reacher")
+        self.is_running = 1
+        pos_set=self.draw_current_state()
+        return np.array(np.concatenate((pos_set,self.target_pos)))
+
+    def step(self,action):    
+        # Get events and check if the user has closed the window
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.is_running = 0
+                break
+        # Change the joint angles (the increment is in degrees)
+        change=np.random.uniform(-1,1,size=3)
+        # self.joint_angles[0] += 0.1
+        # self.joint_angles[1] += 0.2
+        # self.joint_angles[2] += 0.3
+        # self.joint_angles[0] += change[0]
+        # self.joint_angles[1] += change[1]
+        # self.joint_angles[2] += change[2]
+        # print(action)
+        self.joint_angles[0] += action[0]
+        self.joint_angles[1] += action[1]
+        self.joint_angles[2] += action[2]
+        # Draw the robot in its new state
+        pos_set=self.draw_current_state()
+        # if abs(pos_set[6]-self.target_pos[0])<self.L and abs(pos_set[7]-self.target_pos[1])<self.L:
+        #     reward = 2
+        # else:
+        #     reward = 0
+
+        # reward_0=1000
+        # reward = reward_0 * np.exp(-np.sqrt(abs(pos_set[6]-self.target_pos[0])**2+abs(pos_set[7]-self.target_pos[1])**2))
+        # print(reward) #e-100
+
+        reward_0=100.0
+        reward = reward_0 / (np.sqrt(abs(pos_set[6]-self.target_pos[0])**2+abs(pos_set[7]-self.target_pos[1])**2)+1)
+        # time.sleep(0.5)
+
+        return np.array(np.concatenate((pos_set,self.target_pos))), np.array([reward]), np.array([False]), np.array([False])
+
+class Reacher_target(Reacher):
+    def __init__(self, task={}):
+        self._task = task
+        self._target = task.get('target', [100.0,100.0])
+        self.screen_size = 1000
+        self.link_lengths = [200, 140, 100]
+        self.joint_angles = [0, 0, 0]
+        self.target_pos=self._target
+        self.num_actions=3  # equals to number of joints - 1
+        self.num_observations= (len(self.joint_angles)+1+1)*2 # x,y coordinates of (len(joint_angles)+1) joints and 1 target
+        # self.observation_space=Box(-1000,1000, [self.num_observations])
+        # self.action_space=Box(-100,100, [self.num_actions])
+        self.observation_space=np.array(self.num_observations*[0])
+        self.action_space=np.array(self.num_actions*[0])
+        self.L = 8 # distance from target to get reward 2
+        self.steps_per_epi=0
+        self.max_steps_per_epi=20
+        self.batch_id=0
+        super(Reacher, self).__init__()
+    def rescale(self, a):
+        while a>360:
+            a-=360
+        while a <-360:
+            a+=360
+        if not a:
+            a=0
+        return a
+
+    def step(self, action):
+        # Get events and check if the user has closed the window
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.is_running = 0
+                break
+        # print(action)
+        action[0]=self.rescale(action[0])
+        action[1]=self.rescale(action[1])
+        action[2]=self.rescale(action[2])
+        self.joint_angles[0] += action[0]
+        self.joint_angles[1] += action[1]
+        self.joint_angles[2] += action[2]
+        # print('joint angles: ',self.joint_angles)
+        self.joint_angles[0]=self.rescale(self.joint_angles[0])
+        self.joint_angles[1]=self.rescale(self.joint_angles[1])        
+        self.joint_angles[2]=self.rescale(self.joint_angles[2])
+
+        # Draw the robot in its new state
+        pos_set=self.draw_current_state()
+        reward_0=100.0
+        reward = reward_0 / (np.sqrt(abs(pos_set[6]-self._target[0])**2+abs(pos_set[7]-self._target[1])**2)+1)
+        time.sleep(0.2)
+        self.steps_per_epi+=1
+        # print(self.steps_per_epi)
+        if self.steps_per_epi >= self.max_steps_per_epi:
+            self.steps_per_epi=0
+            return np.array(np.concatenate((pos_set,self.target_pos))), np.array(reward), np.array([True]), self.batch_id
+        else:
+            return np.array(np.concatenate((pos_set,self.target_pos))), np.array(reward), np.array([False]), self.batch_id
+
+    def sample_tasks(self, num_tasks):
+        # range of target position in reacher is 0-1000
+        targets = np.random.randint(200,800, size=(num_tasks,2))
+        tasks = [{'target': target} for target in targets]
+        return tasks
+
+    def reset_task(self, task):
+        self._task = task
+        self._target = task['target']
+        self.target_pos=self._target
+        self.batch_id+=1
+        print('target: ',self._target)
+
+if __name__ == "__main__":
+    screen_size = 1000
+    # link_lengths = [200, 140, 100, 80]
+    link_lengths = [200, 140, 100]
+    joint_angles = [0, 0, 0, 0]
+    reacher=Reacher(screen_size, link_lengths, joint_angles)
+    # reacher.reset()
+    num_steps=50
+    # Loop until the window is closed
+    step=0
+    while reacher.is_running:
+        print(step)
+        step+=1
+        reacher.step()
+        if step >= num_steps:
+            reacher.is_running=0
+    # for step in range (num_steps):
+    #     print(step)
+    #     if reacher.is_running:
+    #         reacher.step()
+    
+
+    reacher.reset()
+    # print(reacher.is_running)
+    step=0
+    while reacher.is_running:
+        print(step)
+        step+=1
+        pos=reacher.step()
+        print(pos,len(pos))
+        if step >= num_steps:
+            reacher.is_running=0
+
+
+    

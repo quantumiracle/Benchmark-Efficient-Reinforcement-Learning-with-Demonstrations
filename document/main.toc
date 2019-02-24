@@ -1,0 +1,30 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Background}{2}
+\contentsline {section}{\numberline {2}Reinforcement Learning Algorithms}{2}
+\contentsline {subsection}{\numberline {2.1}Discrete and Continuous Action Space}{2}
+\contentsline {subsection}{\numberline {2.2}Deterministic and Non-deterministic Policy}{2}
+\contentsline {subsection}{\numberline {2.3}Present Algorithms}{2}
+\contentsline {subsubsection}{\numberline {2.3.1}REINFORCE}{2}
+\contentsline {subsubsection}{\numberline {2.3.2}Actor-Critic}{2}
+\contentsline {subsubsection}{\numberline {2.3.3}Q-learning}{2}
+\contentsline {subsubsection}{\numberline {2.3.4}DQN}{2}
+\contentsline {subsubsection}{\numberline {2.3.5}DDPG}{2}
+\contentsline {subsubsection}{\numberline {2.3.6}TRPO}{2}
+\contentsline {subsubsection}{\numberline {2.3.7}PPO}{2}
+\contentsline {section}{\numberline {3}Efficient Reinforcement Learning across tasks}{2}
+\contentsline {subsection}{\numberline {3.1}Environment}{2}
+\contentsline {subsection}{\numberline {3.2}Initialized Reinforcement Learning with Supervised Learning Policy}{2}
+\contentsline {subsubsection}{\numberline {3.2.1}Task Specification}{3}
+\contentsline {subsubsection}{\numberline {3.2.2}Inverse Kinematics}{3}
+\contentsline {subsubsection}{\numberline {3.2.3}Supervised Learning for Initialization Policy}{3}
+\contentsline {subsubsection}{\numberline {3.2.4}DDPG with Initialization Policy -- General Process}{4}
+\contentsline {subsubsection}{\numberline {3.2.5}DDPG with Initialization Policy -- Choice of Noise}{5}
+\contentsline {subsubsection}{\numberline {3.2.6}DDPG with Initialization Policy -- Pre-train the Critic}{12}
+\contentsline {subsubsection}{\numberline {3.2.7}DDPG with Initialization Policy -- Conclusions}{12}
+\contentsline {subsubsection}{\numberline {3.2.8}PPO}{14}
+\contentsline {subsection}{\numberline {3.3}Meta-learning as Initialization for Reinforcement Learning}{17}
+\contentsline {subsubsection}{\numberline {3.3.1}MAML and Reptile}{17}
+\contentsline {subsubsection}{\numberline {3.3.2}Reptile + PPO}{17}
+\contentsline {subsection}{\numberline {3.4}Residual Reinforcement Learning}{17}
+\contentsline {section}{\numberline {4}Problem 2}{18}
+\contentsline {section}{Bibliography}{19}

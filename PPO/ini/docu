@@ -1,0 +1,2 @@
+predict_test.py: make the nn structure same as PPO, and train the initial policy
+predict_test_rep.py: train with reparametrization trick, to see if its  problem of BP with sampling from distribution.

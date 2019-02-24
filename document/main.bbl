@@ -1,0 +1,9 @@
+\begin{thebibliography}{1}
+
+\bibitem{johannink2018residual}
+Tobias Johannink, Shikhar Bahl, Ashvin Nair, Jianlan Luo, Avinash Kumar,
+  Matthias Loskyll, Juan~Aparicio Ojea, Eugen Solowjow, and Sergey Levine.
+\newblock Residual reinforcement learning for robot control.
+\newblock {\em arXiv preprint arXiv:1812.03201}, 2018.
+
+\end{thebibliography}
