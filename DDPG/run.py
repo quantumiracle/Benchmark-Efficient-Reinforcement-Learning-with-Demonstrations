@@ -16,8 +16,6 @@ from importlib import import_module
 # from env_test import Reacher  # large reacher with 5 joints
 from env import Reacher  # general reacher with 3 joints
 
-# from common.vec_env.vec_normalize import VecNormalize
-# from common import atari_wrappers, retro_wrappers
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
@@ -48,9 +46,6 @@ joint_angles = [0, 0, 0, 0]
     
 
 def train(args, extra_args, save_path):
-    # env_type, env_id = get_env_type(args.env)
-    # print('env_type: {}'.format(env_type))
-
     total_timesteps = int(args.num_timesteps)
     seed = args.seed
     env_type='mlp'
@@ -58,8 +53,7 @@ def train(args, extra_args, save_path):
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
 
-    # env = build_env(args)
-    # env = Traffic_env(grid_x,grid_y)
+
     reacher=Reacher(screen_size, link_lengths, joint_angles)
     
     if args.network:
@@ -81,9 +75,6 @@ def train(args, extra_args, save_path):
     return model, reacher
 
 def test(args, extra_args, save_path):
-    # env_type, env_id = get_env_type(args.env)
-    # print('env_type: {}'.format(env_type))
-
     total_timesteps = int(args.num_timesteps)
     seed = args.seed
     env_type='mlp'
@@ -91,8 +82,6 @@ def test(args, extra_args, save_path):
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
 
-    # env = build_env(args)
-    # env = Traffic_env(grid_x,grid_y)
     reacher=Reacher(screen_size, link_lengths, joint_angles)
     
     if args.network:
@@ -114,8 +103,6 @@ def test(args, extra_args, save_path):
     return model, reacher
 
 def retrain(args, extra_args, save_path):
-    # env_type, env_id = get_env_type(args.env)
-    # print('env_type: {}'.format(env_type))
 
     total_timesteps = int(args.num_timesteps)
     seed = args.seed
@@ -124,8 +111,7 @@ def retrain(args, extra_args, save_path):
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
 
-    # env = build_env(args)
-    # env = Traffic_env(grid_x,grid_y)
+
     reacher=Reacher(screen_size, link_lengths, joint_angles)
     
     if args.network:
@@ -155,8 +141,7 @@ def get_default_network(env_type):
 def get_alg_module(alg, submodule=None):
     submodule = submodule or alg
     try:
-        # first try to import the alg module from baselines
-        # alg_module = import_module('.'.join(['baselines', alg, submodule]))
+
         alg_module = import_module('.'.join([ alg, submodule]))
     except ImportError:
         # then from rl_algs
@@ -237,7 +222,7 @@ def main(args, extra_args,save_path):  #train
             if done:
                 obs = env.reset()
 
-        env.close()
+        # env.close()
 
 def main_test(args, extra_args,save_path):
     # configure logger, disable logging in child MPI processes (with rank > 0)
@@ -251,7 +236,7 @@ def main_test(args, extra_args,save_path):
 
     model, env = test(args, extra_args,save_path)
 
-    env.close()
+    # env.close()
 
 def main_retrain(args, extra_args,save_path):
     # configure logger, disable logging in child MPI processes (with rank > 0)

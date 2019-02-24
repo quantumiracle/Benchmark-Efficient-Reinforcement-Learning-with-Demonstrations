@@ -274,23 +274,10 @@ class DDPG(object):
             action += noise
             # print(action)
         action = np.clip(action, self.action_range[0], self.action_range[1])
-        # '''added'''
-        # action_set=[]
-        # # print('action: ', action)
-        # for i in range (int(len(action[0])/2)):
-        #     # print(action[0][2*i:2*i+2])
-        #     action_set.append(np.argmax(action[0][2*i:2*i+2]))
-        # # print('action_set: ', action_set)
-        # # action = np.argmax(action[0])
-        
-
-        # return action_set, q, None, None
 
         return action, q, None, None
 
     def store_transition(self, obs0, action, reward, obs1, terminal1):
-        # print('rs: ', self.reward_scale*np.array([-1]))
-        # reward *= self.reward_scale
 
         B = obs0.shape[0]
         for b in range(B):
@@ -314,15 +301,7 @@ class DDPG(object):
                 self.old_mean : np.array([old_mean]),
             })
 
-            # Run sanity check. Disabled by default since it slows down things considerably.
-            # print('running sanity check')
-            # target_Q_new, new_mean, new_std = self.sess.run([self.target_Q, self.ret_rms.mean, self.ret_rms.std], feed_dict={
-            #     self.obs1: batch['obs1'],
-            #     self.rewards: batch['rewards'],
-            #     self.terminals1: batch['terminals1'].astype('float32'),
-            # })
-            # print(target_Q_new, target_Q, new_mean, new_std)
-            # assert (np.abs(target_Q - target_Q_new) < 1e-3).all()
+
         else:
             target_Q = self.sess.run(self.target_Q, feed_dict={
                 self.obs1: batch['obs1'],

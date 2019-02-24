@@ -57,18 +57,14 @@ def learn(save_path, network, env,
         nb_epochs = 500
 
     rank = MPI.COMM_WORLD.Get_rank()
-    # nb_actions = env.action_space.shape[-1]
     nb_actions = env.num_actions
 
-    # nb_actions=3
-    # print(nb_actions)
     action_shape=np.array(nb_actions*[0]).shape
 
     nb_features = 2*(env.num_actions+1)+env.num_actions
     observation_shape=np.array(nb_features*[0]).shape
     # assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
 
-    # memory = Memory(limit=int(1e6), action_shape=env.action_space.shape, observation_shape=env.observation_space.shape)
     memory = Memory(limit=int(1e6), action_shape=action_shape, observation_shape=observation_shape)
     critic = Critic(network=network, **network_kwargs)
     actor = Actor(nb_actions, network=network, **network_kwargs)
@@ -96,7 +92,6 @@ def learn(save_path, network, env,
     # max_action = env.action_space.high
     # logger.info('scaling actions by {} before executing in env'.format(max_action))
 
-    # agent = DDPG(actor, critic, memory, env.observation_space.shape, env.action_space.shape,
     agent = DDPG(actor, critic, memory, observation_shape, action_shape,
         gamma=gamma, tau=tau, normalize_returns=normalize_returns, normalize_observations=normalize_observations,
         batch_size=batch_size, action_noise=action_noise, param_noise=param_noise, critic_l2_reg=critic_l2_reg,
@@ -128,8 +123,6 @@ def learn(save_path, network, env,
 
     epoch = 0
 
-
-
     start_time = time.time()
 
     epoch_episode_rewards = []
@@ -146,78 +139,26 @@ def learn(save_path, network, env,
         epoch_episode_rewards=[]
         for cycle in range(nb_epoch_cycles):
             # Perform rollouts.
-            if nenvs > 1:
-                # if simulating multiple envs in parallel, impossible to reset agent at the end of the episode in each
-                # of the environments, so resetting here instead
-                agent.reset()
+
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
                 action, q, _, _ = agent.step(obs, apply_noise=True, compute_Q=True)
-                # print('action:', action)
 
-                # Execute next action.
-                # if rank == 0 and render:
-                #     env.render()
-
-                # max_action is of dimension A, whereas action is dimension (nenvs, A) - the multiplication gets broadcasted to the batch
-                # new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
-                
-                # new_obs, r, env_state,done = env.step(action, env_state)
-                '''actually no need for env_state: in or out'''
                 new_obs, r, done = env.step(action)
-
-
-                # print('reward:', r)
-                # note these outputs are batched from vecenv
-                # print('obs: ',obs.shape,obs, 'action: ', action.shape, action )
-                '''obs shape: (1,17), action shape: (1,6)'''
-                # print('maxaction: ', max_action.shape)
-                '''max_action shape: (6,) , max_action*action shape: (1,6)'''
                 t += 1
-                # if rank == 0 and render:
-                #     env.render()
-                # print('r:', r)
+
                 episode_reward += r
                 episode_step += 1
-                # print('episode_re: ', episode_reward) #[1.]
 
                 # Book-keeping.
                 epoch_actions.append(action)
                 epoch_qs.append(q)
                 b=1.
                 agent.store_transition(obs, action, r, new_obs, done) #the batched data will be unrolled in memory.py's append.
-                # print('r: ', r)
-                # '''r shape: (1,)'''
+
                 obs = new_obs
 
-                # for d in range(len(done)):
-                #     if done[d]:
-                #         print('done')
-                #         # Episode done.
-                #         epoch_episode_rewards.append(episode_reward[d])
-                #         episode_rewards_history.append(episode_reward[d])
-                #         epoch_episode_steps.append(episode_step[d])
-                #         episode_reward[d] = 0.
-                #         episode_step[d] = 0
-                #         epoch_episodes += 1
-                #         episodes += 1
-                #         if nenvs == 1:
-                #             agent.reset()
-
-            '''added'''                
             epoch_episode_rewards.append(episode_reward)
-            '''
-            step_set.append(t)
-            reward_set=np.concatenate((reward_set,episode_reward))
-            # print(step_set,reward_set)
-            # print(t, episode_reward)
-            
-            plt.plot(step_set,reward_set)
-            plt.xlabel('Steps')
-            plt.ylabel('Episode Reward')
-            plt.savefig('ddpg.png')
-            plt.show()
-            '''
 
             episode_reward = np.zeros(nenvs, dtype = np.float32) #vector
 
@@ -230,7 +171,6 @@ def learn(save_path, network, env,
                 if memory.nb_entries >= batch_size and t_train % param_noise_adaption_interval == 0:
                     distance = agent.adapt_param_noise()
                     epoch_adaptive_distances.append(distance)
-                # print('Train!')
                 cl, al = agent.train()
                 epoch_critic_losses.append(cl)
                 epoch_actor_losses.append(al)
@@ -387,7 +327,7 @@ def testing(save_path, network, env,
 
     action_noise = None
     param_noise = None
-    # nb_actions = env.action_space.shape[-1]
+
     '''no noise for test'''
     # if noise_type is not None:
     #     for current_noise_type in noise_type.split(','):
@@ -453,83 +393,34 @@ def testing(save_path, network, env,
     epoch_episodes = 0
     for epoch in range(nb_epochs):
         print(nb_epochs)
-        # obs, env_state = env.reset()
         obs = env.reset()
+        epoch_episode_rewards=[]
         for cycle in range(nb_epoch_cycles):
             # Perform rollouts.
-            if nenvs > 1:
-                # if simulating multiple envs in parallel, impossible to reset agent at the end of the episode in each
-                # of the environments, so resetting here instead
-                agent.reset()
+
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
                 '''no noise for test'''
                 action, q, _, _ = agent.step(obs, apply_noise=False, compute_Q=True)
-                # print('action:', action)
 
-                # Execute next action.
-                # if rank == 0 and render:
-                #     env.render()
-
-                # max_action is of dimension A, whereas action is dimension (nenvs, A) - the multiplication gets broadcasted to the batch
-                # new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
-                
-                # new_obs, r, env_state,done = env.step(action, env_state)
                 '''actually no need for env_state: in or out'''
                 new_obs, r, done = env.step(action)
 
-
-                # print('reward:', r)
-                # note these outputs are batched from vecenv
-                # print('obs: ',obs.shape,obs, 'action: ', action.shape, action )
-                '''obs shape: (1,17), action shape: (1,6)'''
-                # print('maxaction: ', max_action.shape)
-                '''max_action shape: (6,) , max_action*action shape: (1,6)'''
                 t += 1
-                # if rank == 0 and render:
-                #     env.render()
-                # print('r:', r)
+
                 episode_reward += r
                 episode_step += 1
-                # print('episode_re: ', episode_reward) #[1.]
 
                 # Book-keeping.
                 epoch_actions.append(action)
                 epoch_qs.append(q)
                 b=1.
                 agent.store_transition(obs, action, r, new_obs, done) #the batched data will be unrolled in memory.py's append.
-                # print('r: ', r)
-                # '''r shape: (1,)'''
+
                 obs = new_obs
 
-                # for d in range(len(done)):
-                #     if done[d]:
-                #         print('done')
-                #         # Episode done.
-                #         epoch_episode_rewards.append(episode_reward[d])
-                #         episode_rewards_history.append(episode_reward[d])
-                #         epoch_episode_steps.append(episode_step[d])
-                #         episode_reward[d] = 0.
-                #         episode_step[d] = 0
-                #         epoch_episodes += 1
-                #         episodes += 1
-                #         if nenvs == 1:
-                #             agent.reset()
 
-            '''added'''                
             epoch_episode_rewards.append(episode_reward)
-            '''
-            step_set.append(t)
-            reward_set=np.concatenate((reward_set,episode_reward))
-            # print(step_set,reward_set)
-            # print(t, episode_reward)
-            
-            plt.plot(step_set,reward_set)
-            plt.xlabel('Steps')
-            plt.ylabel('Episode Reward')
-            plt.savefig('ddpg.png')
-            plt.show()
-            '''
 
             episode_reward = np.zeros(nenvs, dtype = np.float32) #vector
 
@@ -591,7 +482,6 @@ def testing(save_path, network, env,
         combined_stats['rollout/actions_std'] = np.std(epoch_actions)
 
         mean_epoch_episode_rewards.append(np.mean(epoch_episode_rewards))
-        # print(step_set,mean_epoch_episode_rewards)
         step_set.append(t)
         plt.plot(step_set,mean_epoch_episode_rewards)
         plt.xlabel('Steps')
@@ -681,11 +571,8 @@ def retraining(save_path, network, env,
         nb_epochs = 500
 
     rank = MPI.COMM_WORLD.Get_rank()
-    # nb_actions = env.action_space.shape[-1]
     nb_actions = env.num_actions
 
-    # nb_actions=3
-    # print(nb_actions)
     action_shape=np.array(nb_actions*[0]).shape
 
     nb_features = 2*(env.num_actions+1)+env.num_actions
@@ -716,9 +603,6 @@ def retraining(save_path, network, env,
                 action_noise = OrnsteinUhlenbeckActionNoise(mu=np.zeros(nb_actions), sigma=float(stddev) * np.ones(nb_actions))
             else:
                 raise RuntimeError('unknown noise type "{}"'.format(current_noise_type))
-
-    # max_action = env.action_space.high
-    # logger.info('scaling actions by {} before executing in env'.format(max_action))
 
     # agent = DDPG(actor, critic, memory, env.observation_space.shape, env.action_space.shape,
     agent = DDPG(actor, critic, memory, observation_shape, action_shape,
@@ -764,28 +648,16 @@ def retraining(save_path, network, env,
     epoch_episodes = 0
     for epoch in range(nb_epochs):
         print(nb_epochs)
-        # obs, env_state = env.reset()
         obs = env.reset()
         agent.save(save_path)
+        epoch_episode_rewards=[]
         for cycle in range(nb_epoch_cycles):
             # Perform rollouts.
-            if nenvs > 1:
-                # if simulating multiple envs in parallel, impossible to reset agent at the end of the episode in each
-                # of the environments, so resetting here instead
-                agent.reset()
+
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
                 action, q, _, _ = agent.step(obs, apply_noise=True, compute_Q=True)
-                # print('action:', action)
 
-                # Execute next action.
-                # if rank == 0 and render:
-                #     env.render()
-
-                # max_action is of dimension A, whereas action is dimension (nenvs, A) - the multiplication gets broadcasted to the batch
-                # new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
-                
-                # new_obs, r, env_state,done = env.step(action, env_state)
                 '''actually no need for env_state: in or out'''
                 new_obs, r, done = env.step(action)
 
@@ -829,18 +701,6 @@ def retraining(save_path, network, env,
 
             '''added'''                
             epoch_episode_rewards.append(episode_reward)
-            '''
-            step_set.append(t)
-            reward_set=np.concatenate((reward_set,episode_reward))
-            # print(step_set,reward_set)
-            # print(t, episode_reward)
-            
-            plt.plot(step_set,reward_set)
-            plt.xlabel('Steps')
-            plt.ylabel('Episode Reward')
-            plt.savefig('ddpg.png')
-            plt.show()
-            '''
 
             episode_reward = np.zeros(nenvs, dtype = np.float32) #vector
 
@@ -901,7 +761,6 @@ def retraining(save_path, network, env,
         combined_stats['rollout/actions_std'] = np.std(epoch_actions)
 
         mean_epoch_episode_rewards.append(np.mean(epoch_episode_rewards))
-        # print(step_set,mean_epoch_episode_rewards)
         step_set.append(t)
         plt.plot(step_set,mean_epoch_episode_rewards)
         plt.xlabel('Steps')
