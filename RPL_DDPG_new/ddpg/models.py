@@ -40,7 +40,7 @@ class Actor(Model):
         print(self.nb_actions)
         #added
         # self.hidden_layer=1000
-        self.hidden_layer=400 # 100
+        self.hidden_layer=100 # 100
 
 
     def __call__(self, obs, reuse=False):
@@ -70,9 +70,11 @@ class Actor(Model):
             x_res = tf.layers.dense(x_res, self.hidden_layer, kernel_initializer=tf.random_uniform_initializer(minval=-3e-3, maxval=3e-3))
             # x = tf.nn.tanh(x)
             x_res = tf.nn.tanh(x_res)
-            x_res = tf.layers.dense(x_res, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(), bias_initializer=tf.random_uniform_initializer())
+            # x_res = tf.layers.dense(x_res, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(), bias_initializer=tf.random_uniform_initializer())
+            x_res = tf.layers.dense(x_res, self.nb_actions, kernel_initializer=tf.zeros_initializer(), bias_initializer=tf.zeros_initializer())
+            # x_res = tf.layers.dense(x_res, self.nb_actions)
 
-            x_res=tf.tanh(x_res)
+            x_res=20*tf.tanh(x_res)
             
         # x=x+0.0001*x_res
 

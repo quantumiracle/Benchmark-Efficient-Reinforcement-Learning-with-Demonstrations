@@ -89,16 +89,10 @@ class Reacher:
                 self.is_running = 0
                 break
         # Change the joint angles (the increment is in degrees)
-        # action=action+action_res
-        action=action_res
+        action=action+action_res
+        # action=action_res
         change=np.random.uniform(-1,1,size=3)
-        # self.joint_angles[0] += 0.1
-        # self.joint_angles[1] += 0.2
-        # self.joint_angles[2] += 0.3
-        # self.joint_angles[0] += change[0]
-        # self.joint_angles[1] += change[1]
-        # self.joint_angles[2] += change[2]
-        # print(action)
+
         self.joint_angles[0] += action[0][0]
         self.joint_angles[1] += action[0][1]
         self.joint_angles[2] += action[0][2]

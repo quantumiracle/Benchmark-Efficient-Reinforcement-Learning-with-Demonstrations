@@ -24,16 +24,16 @@ def learn(save_path,network, env,
           seed=None,
           total_timesteps=None,
           nb_epochs=None, # with default settings, perform 1M steps total
-          nb_epoch_cycles=50, #50
+          nb_epoch_cycles=4, #50
           nb_rollout_steps=3,  #100
           reward_scale=1.0,
           render=False,
           render_eval=False,
         #   noise_type='adaptive-param_0.2',
-        #   noise_type='normal_0.2',        # large noise
+        #   noise_type='normal_0.5',        # large noise
         #   noise_type='normal_0.02',       # small noise
-        #   noise_type='normal_2.0',      # no noise
-          noise_type='ou_0.9',
+          noise_type='normal_2.0',      
+        #   noise_type='ou_0.9',
 
 
 
@@ -161,34 +161,29 @@ def learn(save_path,network, env,
     epoch_episodes = 0
     '''add this line to make non-initialized to be initialized'''
     agent.load_ini(sess,save_path)
+    preheating_step= 50 #50 episode = 600 steps, 12 steps per episode
+
+    # considering the action values with fiexed weights of nn are relatively fixed, 
+    # wanna apply large noise for critic training (preheating) and regular noise for RL training
+    noise_factor_value=5 # 10
     for epoch in range(nb_epochs):
         print('epochs: ',epoch)
         # obs, env_state = env.reset()
         obs = env.reset()
         agent.save(save_path)
         epoch_episode_rewards=[]
+        if epoch > preheating_step:
+            noise_factor=1.
+        else: 
+            noise_factor=noise_factor_value
+            
         for cycle in range(nb_epoch_cycles):
             # Perform rollouts.
-            if nenvs > 1:
-                # if simulating multiple envs in parallel, impossible to reset agent at the end of the episode in each
-                # of the environments, so resetting here instead
-                agent.reset()
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
-                action,action_res, q, _, _ = agent.step(obs, apply_noise=True, compute_Q=True)
+                action,action_res, q, _, _ = agent.step(obs, noise_factor, apply_noise=True, compute_Q=True )
                 new_obs, r, done = env.step(action, action_res)
-
-
-                # print('reward:', r)
-                # note these outputs are batched from vecenv
-                # print('obs: ',obs.shape,obs, 'action: ', action.shape, action )
-                '''obs shape: (1,17), action shape: (1,6)'''
-                # print('maxaction: ', max_action.shape)
-                '''max_action shape: (6,) , max_action*action shape: (1,6)'''
                 t += 1
-                # if rank == 0 and render:
-                #     env.render()
-                # print('r:', r)
                 episode_reward += r
                 episode_step += 1
                 # print('episode_re: ', episode_reward) #[1.]
@@ -216,20 +211,7 @@ def learn(save_path,network, env,
                 #         if nenvs == 1:
                 #             agent.reset()
 
-            '''added'''                
             epoch_episode_rewards.append(episode_reward)
-            '''
-            step_set.append(t)
-            reward_set=np.concatenate((reward_set,episode_reward))
-            # print(step_set,reward_set)
-            # print(t, episode_reward)
-            
-            plt.plot(step_set,reward_set)
-            plt.xlabel('Steps')
-            plt.ylabel('Episode Reward')
-            plt.savefig('ddpg.png')
-            plt.show()
-            '''
 
             episode_reward = np.zeros(nenvs, dtype = np.float32) #vector
 
@@ -239,7 +221,6 @@ def learn(save_path,network, env,
             epoch_adaptive_distances = []
 
             # filling memory with noised initialized policy & preupdate the critic networks
-            preheating_step= 0 #50 episode = 600 steps, 12 steps per episode
             if epoch > preheating_step:
                 # print('memory_entries: ',memory.nb_entries)
                 for t_train in range(nb_train_steps):
@@ -484,40 +465,20 @@ def testing(save_path, network, env,
         print(nb_epochs)
         # obs, env_state = env.reset()
         obs = env.reset()
+        epoch_episode_rewards = []
         for cycle in range(nb_epoch_cycles):
             # Perform rollouts.
-            if nenvs > 1:
-                # if simulating multiple envs in parallel, impossible to reset agent at the end of the episode in each
-                # of the environments, so resetting here instead
-                agent.reset()
+
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
                 '''no noise for test'''
                 action, q, _, _ = agent.step(obs, apply_noise=False, compute_Q=True)
                 # print('action:', action)
 
-                # Execute next action.
-                # if rank == 0 and render:
-                #     env.render()
-
-                # max_action is of dimension A, whereas action is dimension (nenvs, A) - the multiplication gets broadcasted to the batch
-                # new_obs, r, done, info = env.step(max_action * action)  # scale for execution in env (as far as DDPG is concerned, every action is in [-1, 1])
-                
-                # new_obs, r, env_state,done = env.step(action, env_state)
-                '''actually no need for env_state: in or out'''
                 new_obs, r, done = env.step(action)
 
-
-                # print('reward:', r)
-                # note these outputs are batched from vecenv
-                # print('obs: ',obs.shape,obs, 'action: ', action.shape, action )
-                '''obs shape: (1,17), action shape: (1,6)'''
-                # print('maxaction: ', max_action.shape)
-                '''max_action shape: (6,) , max_action*action shape: (1,6)'''
                 t += 1
-                # if rank == 0 and render:
-                #     env.render()
-                # print('r:', r)
+
                 episode_reward += r
                 episode_step += 1
                 # print('episode_re: ', episode_reward) #[1.]
@@ -803,6 +764,7 @@ def retraining(save_path, network, env,
         # obs, env_state = env.reset()
         obs = env.reset()
         agent.save(save_path)
+        epoch_episode_rewards = []
          #check if the actor initialization policy has been loaded correctly, i.e. equal to \
          # directly ouput values in checkpoint files
         # loaded_weights=tf.get_default_graph().get_tensor_by_name('target_actor/mlp_fc0/w:0')

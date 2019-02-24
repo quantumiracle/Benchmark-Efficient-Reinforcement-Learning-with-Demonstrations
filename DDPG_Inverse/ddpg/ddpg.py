@@ -32,7 +32,7 @@ def learn(save_path,network, env,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.2',        # large noise
         #   noise_type='normal_0.02',       # small noise
-          noise_type='normal_2.0',      # no noise
+          noise_type='normal_2.0',     
 
 
         
@@ -46,7 +46,7 @@ def learn(save_path,network, env,
           normalize_observations=True,
           critic_l2_reg=1e-2,
           actor_lr=1e-4,    # large lr
-          critic_lr=1e-4,   # large lr
+          critic_lr=1e-3,   # large lr
         #   actor_lr=1e-7,      # small lr
         #   critic_lr=1e-3,     # small lr
         #   actor_lr = 1e-10,    # no lr
@@ -154,7 +154,7 @@ def learn(save_path,network, env,
     epoch_qs = []
     epoch_episodes = 0
     '''add this line to make non-initialized to be initialized'''
-    # agent.load_ini(sess,save_path)
+    agent.load_ini(sess,save_path)
     for epoch in range(nb_epochs):
         print('epochs: ',epoch)
         obs = env.reset()
@@ -219,7 +219,7 @@ def learn(save_path,network, env,
             epoch_adaptive_distances = []
 
             # filling memory with noised initialized policy & preupdate the critic networks
-            preheating_step= 0 #50 episode = 600 steps, 12 steps per episode
+            preheating_step= 50 #50 episode = 600 steps, 12 steps per episode
             if epoch > preheating_step:
                 # print('memory_entries: ',memory.nb_entries)
                 for t_train in range(nb_train_steps):
@@ -235,6 +235,7 @@ def learn(save_path,network, env,
             else:
                 # update two critic networks at start
                 cl= agent.update_critic()
+                epoch_critic_losses.append(cl)
                 print('critic loss in initial training: ', cl)
                 pass
 

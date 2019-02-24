@@ -13,18 +13,21 @@
 \contentsline {subsubsection}{\numberline {2.3.7}PPO}{2}
 \contentsline {section}{\numberline {3}Efficient Reinforcement Learning across tasks}{2}
 \contentsline {subsection}{\numberline {3.1}Environment}{2}
-\contentsline {subsection}{\numberline {3.2}Initialized Reinforcement Learning with Supervised Learning Policy}{2}
+\contentsline {subsection}{\numberline {3.2}Initialized Reinforcement Learning with Supervised Learning Policy -- Policy Replacement}{3}
 \contentsline {subsubsection}{\numberline {3.2.1}Task Specification}{3}
-\contentsline {subsubsection}{\numberline {3.2.2}Inverse Kinematics}{3}
-\contentsline {subsubsection}{\numberline {3.2.3}Supervised Learning for Initialization Policy}{3}
-\contentsline {subsubsection}{\numberline {3.2.4}DDPG with Initialization Policy -- General Process}{4}
-\contentsline {subsubsection}{\numberline {3.2.5}DDPG with Initialization Policy -- Choice of Noise}{5}
-\contentsline {subsubsection}{\numberline {3.2.6}DDPG with Initialization Policy -- Pre-train the Critic}{12}
-\contentsline {subsubsection}{\numberline {3.2.7}DDPG with Initialization Policy -- Conclusions}{12}
-\contentsline {subsubsection}{\numberline {3.2.8}PPO}{14}
-\contentsline {subsection}{\numberline {3.3}Meta-learning as Initialization for Reinforcement Learning}{17}
-\contentsline {subsubsection}{\numberline {3.3.1}MAML and Reptile}{17}
-\contentsline {subsubsection}{\numberline {3.3.2}Reptile + PPO}{17}
-\contentsline {subsection}{\numberline {3.4}Residual Reinforcement Learning}{17}
-\contentsline {section}{\numberline {4}Problem 2}{18}
-\contentsline {section}{Bibliography}{19}
+\contentsline {subsubsection}{\numberline {3.2.2}Inverse Kinematics}{4}
+\contentsline {subsubsection}{\numberline {3.2.3}Supervised Learning Policy as Initialization}{4}
+\contentsline {subsubsection}{\numberline {3.2.4}Policy Replacement}{4}
+\contentsline {subsubsection}{\numberline {3.2.5}DDPG with Policy Replacement -- General Process}{5}
+\contentsline {subsubsection}{\numberline {3.2.6}DDPG with Policy Replacement -- Choice of Noise}{7}
+\contentsline {subsubsection}{\numberline {3.2.7}DDPG with Policy Replacement -- Pre-train the Critic}{12}
+\contentsline {subsubsection}{\numberline {3.2.8}DDPG with Policy Replacement -- Conclusions}{12}
+\contentsline {subsubsection}{\numberline {3.2.9}PPO with Policy Replacement}{14}
+\contentsline {subsection}{\numberline {3.3}Initialized Reinforcement Learning with Supervised Learning Policy -- Residual Policy Learning}{17}
+\contentsline {subsubsection}{\numberline {3.3.1}DDPG with Residual Policy Learning}{17}
+\contentsline {subsubsection}{\numberline {3.3.2}Comparison of Residual Learning and Policy Replacement}{17}
+\contentsline {subsection}{\numberline {3.4}Meta-learning as Initialization for Reinforcement Learning}{19}
+\contentsline {subsubsection}{\numberline {3.4.1}MAML and Reptile}{19}
+\contentsline {subsubsection}{\numberline {3.4.2}Reptile + PPO}{19}
+\contentsline {section}{\numberline {4}Problem 2}{20}
+\contentsline {section}{Bibliography}{21}

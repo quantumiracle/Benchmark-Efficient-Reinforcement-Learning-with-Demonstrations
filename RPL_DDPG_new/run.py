@@ -42,8 +42,8 @@ screen_size = 1000
 # env
 link_lengths = [200, 140, 100]
 joint_angles = [0, 0, 0]
-# target_pos=[screen_size*1/4, screen_size*3/4]
-target_pos=[669,430]
+target_pos=[screen_size*1/4, screen_size*1/4]
+# target_pos=[669,430]
 
 #env_large: 5 joints
 # link_lengths = [200, 140, 100,80,60]

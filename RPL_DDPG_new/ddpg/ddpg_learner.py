@@ -257,7 +257,7 @@ class DDPG(object):
         self.stats_ops = ops
         self.stats_names = names
 
-    def step(self, obs, apply_noise=True, compute_Q=True):
+    def step(self, obs, noise_factor=1., apply_noise=True, compute_Q=True):
         if self.param_noise is not None and apply_noise:
             res_actor_tf = self.perturbed_res_actor_tf
         else:
@@ -273,24 +273,12 @@ class DDPG(object):
             noise = self.action_noise()
             # print('noise: ', noise.shape, action.shape)
             # assert noise.shape == action.shape  #(1,3), (3,)  correct addition, no need to assert
-            # print(action, noise)
-            action_res += noise
+            print('action, noise: ',action_res, noise)
+            action_res += noise_factor*noise
             # print(action)
         print(action, action_res)
         action_res = np.clip(action_res, self.action_range[0], self.action_range[1])
         action = np.clip(action, self.action_range[0], self.action_range[1])
-        # '''added'''
-        # action_set=[]
-        # # print('action: ', action)
-        # for i in range (int(len(action[0])/2)):
-        #     # print(action[0][2*i:2*i+2])
-        #     action_set.append(np.argmax(action[0][2*i:2*i+2]))
-        # # print('action_set: ', action_set)
-        # # action = np.argmax(action[0])
-        
-
-        # return action_set, q, None, None
-
         return action, action_res, q, None, None
 
     def store_transition(self, obs0, action, reward, obs1, terminal1):

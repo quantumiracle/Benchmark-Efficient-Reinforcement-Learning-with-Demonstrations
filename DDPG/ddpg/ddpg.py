@@ -22,14 +22,16 @@ def learn(save_path, network, env,
           seed=None,
           total_timesteps=None,
           nb_epochs=None, # with default settings, perform 1M steps total
-          nb_epoch_cycles=50,
+          nb_epoch_cycles=4, # 50
           nb_rollout_steps=3,  #100
           reward_scale=1.0,
           render=False,
           render_eval=False,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.8',
-          noise_type='ou_0.9',
+          noise_type='normal_2.0',
+
+        #   noise_type='ou_0.9',
 
           normalize_returns=False,
           normalize_observations=True,
@@ -263,7 +265,8 @@ def learn(save_path, network, env,
                 with open(os.path.join(logdir, 'eval_env_state.pkl'), 'wb') as f:
                     pickle.dump(eval_env.get_state(), f)
 
-
+    print('stepset: ',step_set)
+    print('rewards: ',mean_epoch_episode_rewards)
     return agent
 
 
