@@ -290,7 +290,7 @@ With the same experiment settings: actor learning rate = 1e-4, critic learning r
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.5]{img/res_ddpg3.pdf}
-	\caption{Comparison of Residual Learning and Policy Replacement for DDPG with another goal.}
+	\caption{Comparison of non-initialized policy and initialized policy with residual learning and policy replacement for DDPG with an easy-to-reach goal position. The bold lines are moving average of episode rewards during learning process. The initialized policy has a preheating process of 600 steps.}
 	\label{fig:rpl2}
 \end{figure}
 
@@ -298,11 +298,11 @@ Comparison in Fig. \ref{fig:rpl1} shows that, for some goals, initialization wit
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.5]{img/res_ddpg2.pdf}
-	\caption{Comparison of Residual Learning and Policy Replacement for DDPG with another goal.}
+	\caption{Comparison of residual learning and policy replacement for DDPG with another goal position.}
 	\label{fig:rpl3}
 \end{figure}
 
-With above analysis, we can see that the performances of different approaches to initialize the RL actually have large variance, which are significantly affected by parameters settings, etc. 
+With above analysis, we can see that the performances of different approaches to initialize the RL actually have large variance, which are significantly affected by parameters settings and task specifications like goal position, etc. 
 
 \subsection{Meta-learning as Initialization for Reinforcement Learning}
 

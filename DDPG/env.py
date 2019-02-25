@@ -125,8 +125,10 @@ if __name__ == "__main__":
     step=0
     while reacher.is_running:
         print(step)
+        action=np.random.rand(1,3)
         step+=1
-        reacher.step()
+        time.sleep(0.5)
+        reacher.step(action)
         if step >= num_steps:
             reacher.is_running=0
     # for step in range (num_steps):
@@ -136,15 +138,6 @@ if __name__ == "__main__":
     
 
     reacher.reset()
-    # print(reacher.is_running)
-    step=0
-    while reacher.is_running:
-        print(step)
-        step+=1
-        pos=reacher.step()
-        print(pos,len(pos))
-        if step >= num_steps:
-            reacher.is_running=0
 
 
     
