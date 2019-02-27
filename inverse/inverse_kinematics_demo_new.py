@@ -114,16 +114,6 @@ sample_batch=0
 # max_action=0
 while is_running:
     step+=1
-    # Check for mouse events
-    # for event in pygame.event.get():
-    #     if event.type == pygame.QUIT:
-    #         is_running = 0
-    #         break
-    #     elif event.type == pygame.MOUSEBUTTONUP:
-    #         # Set a new target
-    #         target_screen = pygame.mouse.get_pos()
-    #         target_pose = [(target_screen[0] / screen_size) - 0.5, -((target_screen[1] / screen_size) - 0.5)]
-
 
     #random generate target_pose
     range_pose=0.35

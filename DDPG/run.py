@@ -15,7 +15,7 @@ import logger
 from importlib import import_module
 # from env_test import Reacher  # large reacher with 5 joints
 # from env import Reacher  # general reacher with 3 joints
-from env_obstacle import Reacher 
+from env_2obstacle import Reacher 
 
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"

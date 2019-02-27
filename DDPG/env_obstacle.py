@@ -26,7 +26,7 @@ class Reacher:
         self.ini_pos=[480, 60]
         self.target_pos=[self.screen_size/4, self.screen_size*3/4]
         self.obstacle_pos=0.5 * ( np.array(self.ini_pos)+np.array(self.target_pos))
-        self.OBSTACLE_RADIUS = 30
+        self.OBSTACLE_RADIUS = 50
         self.OBSTACLE_PANELTY = -5
 
 
@@ -118,12 +118,12 @@ class Reacher:
         # print(reward) #e-100
 
         reward_0=100.0
-        reward = reward_0 / (np.sqrt(abs(pos_set[6]-self.target_pos[0])**2+abs(pos_set[7]-self.target_pos[1])**2)+1)
+        reward = reward_0 / (np.sqrt((pos_set[6]-self.target_pos[0])**2+(pos_set[7]-self.target_pos[1])**2)+1)
 
-        if np.sqrt(abs(pos_set[6]-self.target_pos[0])**2+abs(pos_set[7]-self.target_pos[1])) < self.OBSTACLE_RADIUS:
+        if np.sqrt((pos_set[6]-self.obstacle_pos[0])**2+(pos_set[7]-self.obstacle_pos[1])**2) < self.OBSTACLE_RADIUS:
             reward += self.OBSTACLE_PANELTY
 
-        time.sleep(0.5)
+        # time.sleep(0.5)
 
         return np.array([np.concatenate((pos_set,self.link_lengths))]), np.array([reward]), np.array([False])
 
