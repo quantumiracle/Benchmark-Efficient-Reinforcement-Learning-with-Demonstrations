@@ -29,7 +29,7 @@ def learn(save_path, network, env,
           render_eval=False,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.8',
-          noise_type='normal_5.0',
+          noise_type='normal_10.0',
 
         #   noise_type='ou_0.9',
 

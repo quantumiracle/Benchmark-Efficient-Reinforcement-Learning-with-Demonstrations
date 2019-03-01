@@ -86,12 +86,12 @@ class Reacher:
         return [p0_u,p0_v,p1_u,p1_v,p2_u,p2_v,p3_u,p3_v]
     
     def reset(self,):
-        self.joint_angles = [0, 0, 0, 0]
+        self.joint_angles = [0.1, 0.1, 0.1]
         self.screen = pygame.display.set_mode((self.screen_size, self.screen_size))
         pygame.display.set_caption("Reacher")
         self.is_running = 1
         pos_set=self.draw_current_state()
-        return np.array([np.concatenate((pos_set,self.link_lengths))])
+        return np.array([pos_set])
 
     def step(self,action):    
         # Get events and check if the user has closed the window
@@ -130,8 +130,8 @@ class Reacher:
             reward += self.OBSTACLE_PANELTY
 
         # time.sleep(0.5)
-
-        return np.array([np.concatenate((pos_set,self.link_lengths))]), np.array([reward]), np.array([False])
+        # 8 dim return
+        return np.array([pos_set]), np.array([reward]), np.array([False])
 
 
 if __name__ == "__main__":

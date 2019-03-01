@@ -131,7 +131,7 @@ class Reacher:
             reward += self.OBSTACLE_PANELTY
 
         # time.sleep(0.5)
-
+        # 11 dim return
         return np.array([np.concatenate((pos_set,self.link_lengths))]), np.array([reward]), np.array([False])
 
 

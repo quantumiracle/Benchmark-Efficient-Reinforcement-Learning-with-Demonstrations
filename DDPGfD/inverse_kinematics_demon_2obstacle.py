@@ -141,7 +141,7 @@ reach_step = 50 # number of steps to reach each target
 div_step = 10 # number of steps divided for each goal trajectory
 train_set=[]
 
-data_file = open("data1.p","wb")  # one sample in file, with number of steps = 2*div_step
+data_file = open("data1.npy","wb")  # one sample in file, with number of steps = 2*div_step
 
 # use [:] to prevent copying pointer instead of copying the array, 
 # A=B (array), if A is changed with like += ,etc operations, will cause B to be changed!
@@ -197,7 +197,10 @@ while True:
 
         # save sample
         print('data dim: ', len(train_set))
-        pickle.dump( train_set, data_file )
+        print(train_set)
+        # pickle.dump( train_set, data_file )
+        np.save(data_file, train_set)
+        data_file.close()
         train_set=[]
         break
         
