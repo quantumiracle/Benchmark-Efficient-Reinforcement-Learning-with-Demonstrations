@@ -143,7 +143,13 @@ def learn(save_path, network, env,
         agent.save(save_path)
         epoch_episode_rewards=[]
         ''' feed memory with demonstrations'''
-        agent.feed_demon2memory()
+        # agent.feed_demon2memory()
+        # if epoch < 50:
+            # agent.feed_demon2memory()
+
+        if epoch % 100 ==0:
+            agent.feed_demon2memory()
+
         for cycle in range(nb_epoch_cycles):
 
             for t_rollout in range(nb_rollout_steps):
@@ -279,14 +285,15 @@ def testing(save_path, network, env,
           seed=None,
           total_timesteps=None,
           nb_epochs=None, # with default settings, perform 1M steps total
-          nb_epoch_cycles=50,
+          nb_epoch_cycles=7, # 50
           nb_rollout_steps=3,  #100
           reward_scale=1.0,
           render=False,
           render_eval=False,
-          # no noise for test
         #   noise_type='adaptive-param_0.2',
-        #   noise_type='normal_0.9',
+        #   noise_type='normal_0.8',
+          noise_type='normal_5.0',
+
         #   noise_type='ou_0.9',
 
           normalize_returns=False,
@@ -308,6 +315,7 @@ def testing(save_path, network, env,
           **network_kwargs):
 
 
+
     if total_timesteps is not None:
         assert nb_epochs is None
         nb_epochs = int(total_timesteps) // (nb_epoch_cycles * nb_rollout_steps)
@@ -315,17 +323,15 @@ def testing(save_path, network, env,
         nb_epochs = 500
 
     rank = MPI.COMM_WORLD.Get_rank()
-    # nb_actions = env.action_space.shape[-1]
     nb_actions = env.num_actions
 
-    # nb_actions=3
-    # print(nb_actions)
     action_shape=np.array(nb_actions*[0]).shape
 
-    nb_features = 2*(env.num_actions+1)+env.num_actions
-    observation_shape=np.array(nb_features*[0]).shape
-    # assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
+    # nb_features = 2*(env.num_actions+1)+env.num_actions  # with link length, 11 dim
+    # nb_features = 2*(env.num_actions+1)  # no link length, 8 dim
+    nb_features = 2*(env.num_actions+2)  # no link length, with target position, 10 dim
 
+    observation_shape=np.array(nb_features*[0]).shape
     # memory = Memory(limit=int(1e6), action_shape=env.action_space.shape, observation_shape=env.observation_space.shape)
     memory = Memory(limit=int(1e6), action_shape=action_shape, observation_shape=observation_shape)
     critic = Critic(network=network, **network_kwargs)

@@ -66,7 +66,7 @@ def draw_current_state(current_joint_angles, current_target_pose):
     pygame.draw.circle(screen, (255, 255, 0), np.array(current_target_pose).astype(int), 10)
     ''' show the graph'''
     pygame.display.flip()
-    # time.sleep(0.01)
+    # time.sleep(0.1)
 
 
 
@@ -105,6 +105,9 @@ def action_rescale(action):
     ''' as 2 env are used in this code: inverse env with action range 2PI, origin env with action range 360 '''
     return action/np.pi*180
 
+def position_transform(pos, screen_size = 1000.):
+    return np.array([pos[0]-500, -pos[1]+500]) / screen_size
+
 
 ''' Parameters setting and Initialization '''
 # 2 obstacles
@@ -139,7 +142,7 @@ reach_step = 50 # number of steps to reach each target
 div_step = 10 # number of steps divided for each goal trajectory, total step for each episode is 2*div_step as 2 goals for each episode
 train_set=[]
 
-data_file = open("data_memory2.p","wb")  # one sample in file, with number of steps = 2*div_step
+data_file = open("data_memory2_21steps.p","wb")  # one sample in file, with number of steps = 2*div_step
 
 # use [:] to prevent copying pointer instead of copying the array, 
 # A=B (array), if A is changed with like += ,etc operations, will cause B to be changed!
@@ -149,7 +152,7 @@ joint_angles=start_joint_angles[:]
 sample_batch=0
 target_pos = INTER_GOAL  # initial goal
 
-noise_scale = 1  # choose noise range doesn't hurt the trajectory to be an expert one, action range 360
+noise_scale = 0.5  # choose noise range doesn't hurt the trajectory to be an expert one, action range 360
 num_episodes = 50  # number of episode samples generated
 
 # another reacher used as generated demonstration trajectories running, 
@@ -161,7 +164,7 @@ reacher=Reacher(screen_size, screen_size*np.array(link_lengths), action_rescale(
 # Create a PyGame instance
 screen = pygame.display.set_mode((screen_size, screen_size))
 pygame.display.set_caption("Inverse Kinematics Demo")
-pygame.display.flip()
+# pygame.display.flip()
 # time.sleep(0.1)
 
 
@@ -187,11 +190,11 @@ for ep in range(num_episodes):
             state=get_state(start_joint_angles,target_pos)
             print('start state: ', state)
             # step_joint_angles=start_joint_angles
-            for i in range (div_step):
+            for i in range (div_step+1):
                 action_noise = np.random.normal(0, noise_scale, action.shape[0])
                 action = action + action_noise  # noise injection for action
                 new_state, reward, done = reacher.step([action])
-                print(action, new_state, reward)
+                print(reward)
                 # match the data dim in memory, state: (1,5), action: (1,3), new_state: (1,5), reward: (1,), done: (1,)
                 episode_set.append((np.array([state]), np.array([action]), reward, new_state, done)) 
                 # print((np.array([state]), np.array([action]), new_state, reward, done))
@@ -203,7 +206,7 @@ for ep in range(num_episodes):
                 pygame.draw.circle(screen, (0, 0, 255), [state[6],state[7]], 3)
                 pygame.display.flip()
                 # time.sleep(0.1)
-
+            print('Run intermediate goal: ', [state[6],state[7]], position_transform([state[6],state[7]]) )
             target_pos = TARGET_GOAL  # final goal
             # inter_joint_angles = target_joint_angles[:]
             inter_joint_angles = joint_angles[:]  # here use real joint_angles instead of intermediate target joint_angles for data feeding in ddpg memory
@@ -218,10 +221,11 @@ for ep in range(num_episodes):
             action =  action_rescale(action)
             state=get_state(start_joint_angles_,target_pos)
             # step_joint_angles=start_joint_angles_[:]
-            for i in range (div_step):
+            for i in range (div_step+1):
                 action_noise = np.random.normal(0, noise_scale, action.shape[0])
                 action = action + action_noise  # noise injection for action
                 new_state, reward, done = reacher.step([action])
+                print(reward)
                 episode_set.append((np.array([state]), np.array([action]), reward, new_state, done))
                 # step_joint_angles = step_joint_angles + action
                 # state=get_state(step_joint_angles,target_pos)
@@ -231,6 +235,7 @@ for ep in range(num_episodes):
                 pygame.draw.circle(screen, (0, 0, 255), [state[6],state[7]], 3)
                 pygame.display.flip()
                 # time.sleep(0.1)
+            print('Run target goal: ', [state[6],state[7]],  position_transform([state[6],state[7]]) )
             train_set.append(episode_set)
             break
     

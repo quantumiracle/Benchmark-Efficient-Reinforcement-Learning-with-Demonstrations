@@ -20,8 +20,8 @@ from a2c.utils import conv, fc, conv_to_fc, batch_to_seq, seq_to_batch
 
 save_file='./model/ddpg'
 # save_file='./model/ppo2'
-# data_file = open("data1.p","rb")
-data_file = open("data2.npy","rb")
+data_file = open("data1.npy","rb")
+# data_file = open("data2.npy","rb")
 
 
 parser = argparse.ArgumentParser(description='Train or test neural net motor controller.')
@@ -250,19 +250,19 @@ if args.train:
     print('data set shape: ', data_set.shape)
 
     # # data1.npy
-    # for i in range(data_set.shape[0]):
-    #     state_set.append(data_set[i, 0])
-    #     rescaled_action=rescale_action(data_set[i, 1],360)
-    #     action_set.append(rescaled_action)
-    # print(state_set, action_set)
+    for i in range(data_set.shape[0]):
+        state_set.append(data_set[i, 0])
+        rescaled_action=rescale_action(data_set[i, 1],360)
+        action_set.append(rescaled_action)
+    print(state_set, action_set)
 
     # # data2.npy
-    for i in range(data_set.shape[0]):
-        for j in range(data_set.shape[1]):
-            state_set.append(data_set[i, j, 0])
-            rescaled_action=rescale_action(data_set[i, j, 1],360)
-            action_set.append(rescaled_action)
-    print(state_set, action_set)
+    # for i in range(data_set.shape[0]):
+    #     for j in range(data_set.shape[1]):
+    #         state_set.append(data_set[i, j, 0])
+    #         rescaled_action=rescale_action(data_set[i, j, 1],360)
+    #         action_set.append(rescaled_action)
+    # print(state_set, action_set)
 
 
 

@@ -403,7 +403,7 @@ class DDPG(object):
         """
         feed demonstrations from data file into memory
         """
-        with open('data_memory2.p', 'rb') as f:
+        with open('data_memory2_21steps.p', 'rb') as f:
             data = pickle.load(f)
         for _, episode in enumerate(data):
             for _, step in enumerate(episode):

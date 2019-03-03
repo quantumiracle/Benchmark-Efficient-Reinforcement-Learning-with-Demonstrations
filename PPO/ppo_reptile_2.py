@@ -16,15 +16,15 @@ import gym
 from env_2 import Reacher_for2 as Reacher
 from copy import copy
 import argparse
-ITR=50  # number of tasks
-EP_MAX = 300  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
+ITR=100  # number of tasks
+EP_MAX = 2000  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
 EP_LEN = 20
 GAMMA = 0.9
 A_LR = 1e-4
 C_LR = 2e-4
 BATCH = 64
-A_UPDATE_STEPS = 10
-C_UPDATE_STEPS = 10
+A_UPDATE_STEPS = 3
+C_UPDATE_STEPS = 3
 S_DIM, A_DIM = 8,2
 METHOD = [
     dict(name='kl_pen', kl_target=0.01, lam=0.5),   # KL penalty
@@ -138,9 +138,9 @@ class PPO(object):
     def choose_action(self, s):
         s = s[np.newaxis, :]
         a ,mu, sigma= self.sess.run([self.sample_op, self.mu, self.sigma], {self.tfs: s})
-        print('s: ',s)
-        print('a: ', a)
-        print('mu, sigma: ', mu,sigma)
+        # print('s: ',s)
+        # print('a: ', a)
+        # print('mu, sigma: ', mu,sigma)
         return np.clip(a[0], -360, 360)
 
     def get_v(self, s):
@@ -260,7 +260,7 @@ if args.train:
             else: all_ep_r.append(all_ep_r[-1]*0.9 + ep_r*0.1)
             print(
                 'Ep: %i' % ep,
-                "|Ep_r: %i" % ep_r,
+                "|Ep_r: %.2f" % ep_r,
                 ("|Lam: %.4f" % METHOD['lam']) if METHOD['name'] == 'kl_pen' else '',
             )
             # if ep % 500==0:

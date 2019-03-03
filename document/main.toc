@@ -11,7 +11,7 @@
 \contentsline {subsubsection}{\numberline {2.3.5}DDPG}{2}
 \contentsline {subsubsection}{\numberline {2.3.6}TRPO}{2}
 \contentsline {subsubsection}{\numberline {2.3.7}PPO}{2}
-\contentsline {section}{\numberline {3}Efficient Reinforcement Learning across tasks}{2}
+\contentsline {section}{\numberline {3}Efficient Reinforcement Learning}{2}
 \contentsline {subsection}{\numberline {3.1}Environment}{2}
 \contentsline {subsection}{\numberline {3.2}Initialized Reinforcement Learning with Supervised Learning Policy -- Policy Replacement}{3}
 \contentsline {subsubsection}{\numberline {3.2.1}Task Specification}{3}
@@ -26,8 +26,9 @@
 \contentsline {subsection}{\numberline {3.3}Initialized Reinforcement Learning with Supervised Learning Policy -- Residual Policy Learning}{17}
 \contentsline {subsubsection}{\numberline {3.3.1}DDPG with Residual Policy Learning}{17}
 \contentsline {subsubsection}{\numberline {3.3.2}Comparison of Residual Learning and Policy Replacement}{17}
-\contentsline {subsection}{\numberline {3.4}Meta-learning as Initialization for Reinforcement Learning}{19}
-\contentsline {subsubsection}{\numberline {3.4.1}MAML and Reptile}{19}
-\contentsline {subsubsection}{\numberline {3.4.2}Reptile + PPO}{19}
-\contentsline {section}{\numberline {4}Problem 2}{20}
-\contentsline {section}{Bibliography}{21}
+\contentsline {subsubsection}{\numberline {3.3.3}Modelling Analysis of Residual Policy Learning}{19}
+\contentsline {subsection}{\numberline {3.4}Meta-learning as Initialization for Reinforcement Learning}{20}
+\contentsline {subsubsection}{\numberline {3.4.1}MAML and Reptile}{20}
+\contentsline {subsubsection}{\numberline {3.4.2}Reptile + PPO}{20}
+\contentsline {subsection}{\numberline {3.5}Off-Policy Reinforcement Learning with Demonstrations}{20}
+\contentsline {section}{Bibliography}{20}

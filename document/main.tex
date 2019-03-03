@@ -61,7 +61,7 @@ There are two types of action choice in a RL policy, the deterministic and the n
 
 
 
-\section{Efficient Reinforcement Learning across tasks}
+\section{Efficient Reinforcement Learning}
 \subsection{Environment}
 In this work, we apply reinforcement learning algorithms on the \textit{Reacher} task. As shown in Fig.1, the goal of \textit{Reacher} task is to let the end of `reacher'  agent to be as close as possible to the positions with highest rewards.
 \begin{figure}[htbp]
@@ -304,75 +304,48 @@ Comparison in Fig. \ref{fig:rpl1} shows that, for some goals, initialization wit
 
 With above analysis, we can see that the performances of different approaches to initialize the RL actually have large variance, which are significantly affected by parameters settings and task specifications like goal position, etc. 
 
+\subsubsection{Modelling Analysis of Residual Policy Learning}
+Consider that the residual policy learning is actually using policy $\pi_{res}(s)$ to generate the residual action, whose inputs $s$ are exactly the same as the initial policy $\pi_{ini}(s)$, the modelling of residual policy is actually may be more complicated than a general policy in RL, although the value range of outputs for residual policy may be smaller (a smaller searching space for delicate actions). In order to have a more accurate composite action, the residual policy not only needs to model the environment but also the initial policy. The modelling relationship can be interpreted as follows. 
+
+We denote the modelling of a general policy in RL as $\mathcal{M}_g$, the modellings of the initial policy and the residual policy are $\mathcal{M}_i, \mathcal{M}_r$, respectively. A modelling means a mechanism that the policy learned from interactions with its environment to represent the its environment and based on which the policy determines actions. The relationship of above modellings is:
+\begin{equation}
+	\mathcal{M}_g = \mathcal{M}_i \oplus \mathcal{M}_r
+ \end{equation}
+ which means the $\mathcal{M}_i, \mathcal{M}_r$ are actually dual modellings with respect to a $\mathcal{M}_g$. As we only train the residual policy in the learning process of residual RL, we have the modelling to construct in this training process the $\mathcal{M}_r$:
+ \begin{equation}
+ \mathcal{M}_r = \mathcal{M}_g \ominus \mathcal{M}_i
+ \end{equation}
+ where the $\oplus, \ominus$ denotes a positive or negative modelling composite relationship. And the composite relationship does not determine the complexity of the composite modelling to be more or less than original constituent modellings, which means the modelling of $\mathcal{M}_r$ may not be less complicated than the general policy $\mathcal{M}_g$, and sometimes even more complicated than $\mathcal{M}_g$. This means the learning of a residual does not have to be easier than directly learning the general policy.
+ 
+ The $\textit{Reacher}$ task is made more complicated for testing effects of demonstrations, in which there are two penalty areas. Fig. shown comparisons of DDPG from demonstrations with general DDPG, both without prioritized experience replay.
+
 \subsection{Meta-learning as Initialization for Reinforcement Learning}
 
 \subsubsection{MAML and Reptile}
 
 \subsubsection{Reptile + PPO}
 
+\subsection{Off-Policy Reinforcement Learning with Demonstrations}
+We show different initialization strategies for efficient RL as above, and leveraging demonstrations for deep RL is an alternative approach to learn efficiently. Both initialization approach and leveraging demonstrations approach are taking advantages of the expert trajectories, however, they treat them differently. Instead of pre-training a policy to initialize the RL policy, the approach of leveraging demonstrations directly feeds those expert trajectories into memory of off-policy RL (e.g. DDPG) to make the policy trained with both demonstrations and explorations.
+
+We apply a more complicated environment for this experiment as shown in Fig. \ref{fig:ddpgfd0}, with two penalty areas. The optimal trajectories for the agent is to go through the middle of two penalty areas. And we generate good demonstrations by manually setting an intermediate goal position at the middle of two penalty areas.
+
+Experiment results of applying DDPG from demonstrations with different feeding approaches and vanilla DDPG are shown in Fig. \ref{fig:ddpgfd1}.  The prioritized experience replay is not used in this experiment. The feeded demonstration dataset contains totally 50 episodes (20 steps each episode) of trajectories, and each feeding operation is to feed the whole demonstrations dataset. It seems the more demonstrations feeded into the memory, the worst learning performance it is.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.3]{img/ddpgfd_env.png}
+	\caption{$\textit{Reacher}$ environment with two penalty areas.}
+	\label{fig:ddpgfd0}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.5]{img/ddpgfd1.pdf}
+	\caption{Comparison of DDPG from demonstrations with different feeding approaches (without prioritized experience replay) and vanilla DDPG. The blue line is feeding demonstrations for every epoch for the whole training process (500 epochs); the green line is feeding demonstrations for every epoch for the first 50 epochs; the yellow line is feeding demonstrations for every 50 epochs for the whole training process; the black line is feeding demonstrations for every 100 epochs for the whole training process; the red line is vanilla DDPG without using demonstrations. }
+	\label{fig:ddpgfd1}
+\end{figure}
 
 
-
-
-
-%%%%%%%%%%%%%%%%%
-%   Problem 2   %
-%%%%%%%%%%%%%%%%%
-\pagebreak
-\section{Problem 2}
-
-Example of Simplex tableau:
-\begin{align}
-    \begin{array}{c | cccccc | c}
-         BV  & z & x_1 & x_2 & x_3 & x_4 & x_5 & RHS \\ 
-         \hline % horizontal line
-         z   & 1 & 0 & 0 & -\tfrac{2}{5} & -\tfrac{1}{5} & 0 & -8 \\
-         x_2 & 0 & 0 & 1 & -\tfrac{1}{5} & \tfrac{2}{5}  & 0 & 5 \\
-         x_5 & 0 & 0 & 0 & -\tfrac{3}{5} & \tfrac{1}{5}  & 1 & 1 \\
-         x_1 & 0 & 1 & 0 & \tfrac{3}{5}  & -\tfrac{1}{5} & 0 & 3
-    \end{array}
-\end{align}
-
-
-We can define the \LaTeX{} commands \texttt{Tstrut} and \texttt{Bstrut} to get more spacing between rows in the tableau and make it look nicer:
-\begin{align}
-    \begin{array}{c | cccccc | c}
-         BV  & z & x_1 & x_2 & x_3 & x_4 & x_5 & RHS \Tstrut\Bstrut \\ 
-         \hline
-         z   & 1 & 0 & 0 & -\tfrac{2}{5} & -\tfrac{1}{5} & 0 & -8 \Tstrut\Bstrut \\
-         x_2 & 0 & 0 & 1 & -\tfrac{1}{5} & \tfrac{2}{5}  & 0 & 5  \Tstrut\Bstrut \\
-         x_5 & 0 & 0 & 0 & -\tfrac{3}{5} & \tfrac{1}{5}  & 1 & 1  \Tstrut\Bstrut \\
-         x_1 & 0 & 1 & 0 & \tfrac{3}{5}  & -\tfrac{1}{5} & 0 & 3  \Tstrut\Bstrut
-    \end{array}
-\end{align}
-
-We can colour text and highlight cells in tableau, or just leave them empty:
-\begin{align}
-    \begin{array}{c | cccccc | c}
-         BV  & z & x_1 & x_2 & x_3 & x_4 & x_5 & RHS \Tstrut\Bstrut \\ 
-         \hline
-         z   & 1 & & & -\tfrac{2}{5} & -\tfrac{1}{5} & & -8 \Tstrut\Bstrut \\
-         x_2 & & & \cellcolor{gray!50}1 & -\tfrac{1}{5} & \tfrac{2}{5} & & 5 \Tstrut\Bstrut \\
-         x_5 & & & & -\tfrac{3}{5} & \tfrac{1}{5}  & 1 & 1 \Tstrut\Bstrut \\
-         x_1 & & \textcolor{red}{1} & & \tfrac{3}{5}  & -\tfrac{1}{5} & & 3 \Tstrut\Bstrut
-    \end{array}
-\end{align}
-
-Here is how you make vectors and matrices:
-\begin{align}
-    \mathbf x = \begin{bmatrix} 1 & 2 & 3 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}^\top \\
-    \mathbf A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}^{-1}
-\end{align}
-
-Here is a formulation of a linear program:
-\begin{align*}
-    \min_{x} \quad & c^\top x \\
-    \mathrm{s.t.} \quad 
-    & A x \leq b \\
-    &-1 \leq x_n \leq 1 \,, \quad n = 1, \dots, N
-\end{align*}
-
-There is an ocean of Latex questions and answers online. If you have a question, most likely someone else will have asked the same question before. 
 
 \medskip
  

@@ -124,9 +124,9 @@ class Reacher:
 
         reward_0=100.0
         reward = reward_0 / (np.sqrt((pos_set[6]-self.target_pos[0])**2+(pos_set[7]-self.target_pos[1])**2)+1)
-        if np.sqrt((pos_set[6]-self.obstacle1_pos[0])**2+(pos_set[7]-self.obstacle1_pos[1])) < self.OBSTACLE_RADIUS:
+        if np.sqrt((pos_set[6]-self.obstacle1_pos[0])**2+(pos_set[7]-self.obstacle1_pos[1])**2) < self.OBSTACLE_RADIUS:
             reward += self.OBSTACLE_PANELTY
-        if np.sqrt((pos_set[6]-self.obstacle2_pos[0])**2+(pos_set[7]-self.obstacle2_pos[1])) < self.OBSTACLE_RADIUS:
+        if np.sqrt((pos_set[6]-self.obstacle2_pos[0])**2+(pos_set[7]-self.obstacle2_pos[1])**2) < self.OBSTACLE_RADIUS:
             reward += self.OBSTACLE_PANELTY
 
         # time.sleep(0.5)

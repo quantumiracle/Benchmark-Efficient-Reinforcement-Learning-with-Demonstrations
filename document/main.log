@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  24 FEB 2019 19:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  3 MAR 2019 18:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -823,19 +823,31 @@ File: img/res_ddpg2.pdf Graphic file (type pdf)
 Package pdftex.def Info: img/res_ddpg2.pdf  used on input line 300.
 (pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
  [17] [18 <./img/goal_position.png> <./img/res_ddpg3.pdf>] [19 <./img/res_ddpg2
-.pdf>] (./main.bbl [20]) [21] (./main.aux)
+.pdf>]
+<img/ddpgfd_env.png, id=748, 951.555pt x 919.435pt>
+File: img/ddpgfd_env.png Graphic file (type png)
+<use img/ddpgfd_env.png>
+Package pdftex.def Info: img/ddpgfd_env.png  used on input line 336.
+(pdftex.def)             Requested size: 285.4687pt x 275.83263pt.
+<img/ddpgfd1.pdf, id=749, 722.7pt x 578.16pt>
+File: img/ddpgfd1.pdf Graphic file (type pdf)
+<use img/ddpgfd1.pdf>
+Package pdftex.def Info: img/ddpgfd1.pdf  used on input line 343.
+(pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
+ (./main.bbl) [20] [21 <./img/ddpgfd_env.png>] [22 <./img/ddpgfd1.pdf>] (./main
+.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4762 strings out of 494847
- 61822 string characters out of 6179080
- 148761 words of memory out of 5000000
- 7957 multiletter control sequences out of 15000+600000
- 13243 words of font info for 51 fonts, out of 8000000 for 9000
+ 4770 strings out of 494847
+ 62027 string characters out of 6179080
+ 142781 words of memory out of 5000000
+ 7965 multiletter control sequences out of 15000+600000
+ 13154 words of font info for 50 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 41i,15n,35p,1528b,229s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,8n,35p,1528b,229s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texli
@@ -848,12 +860,11 @@ amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/s
-hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (21 pages, 707270 bytes).
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on main.pdf (22 pages, 748987 bytes).
 PDF statistics:
- 803 PDF objects out of 1000 (max. 8388607)
- 190 compressed objects within 2 object streams
+ 844 PDF objects out of 1000 (max. 8388607)
+ 195 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 111 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 
