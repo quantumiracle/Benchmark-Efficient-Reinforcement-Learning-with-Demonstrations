@@ -23,58 +23,58 @@
 \newlabel{fig:universe}{{2}{4}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Inverse Kinematics}{4}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Supervised Learning Policy as Initialization}{4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}Policy Replacement}{4}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Training curve of supervised learning with data from inverse kinematics.}}{5}}
 \newlabel{fig:universe}{{3}{5}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}DDPG with Policy Replacement -- General Process}{5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Comparison of initial learning performances of DDPG with/without initialization policy on \textit  {Reacher} task. The green line is the mean reward of initial policy trained with supervised learning. The blue line and red line are mean rewards of DDPG with and without initialization in initial 2000 training epochs . }}{6}}
-\newlabel{fig:universe}{{4}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.6}DDPG with Policy Replacement -- Choice of Noise}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}Policy Replacement}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}DDPG with Policy Replacement -- General Process}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.6}DDPG with Policy Replacement -- Choice of Noise}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Comparison of initial learning performances of DDPG with/without initialization policy on \textit  {Reacher} task. The green line is the mean reward of initial policy trained with supervised learning. The blue line and red line are mean rewards of DDPG with and without initialization in initial 2000 training epochs . }}{7}}
+\newlabel{fig:universe}{{4}{7}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces A figure showing why adding noise would help for exploring better actions, with noise type of $\epsilon $-greedy policy. Suppose the initial policy and the optimal policy are Gaussian distributions with different means and variances, and the noise is a uniform distribution within specific range (range of possible action value). The figure shows how the noise of $\epsilon $-greedy helps to increase the possibility for non-optimal policy to sample the optimal action }}{8}}
 \newlabel{fig:noise}{{5}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces $\epsilon $-greedy policy with different initial distributions and same $\epsilon $ value. It shows the same $\epsilon $ will cause different effects for noisy policy, it benefits the top two initial distribution and hurts the bottom two distributions. So large $\epsilon $ value (0.8) only helps with large divergence of initial policy and optimal policy. }}{8}}
-\newlabel{fig:noise1}{{6}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces $\epsilon $-greedy policy with different initial distributions and same $\epsilon $ value. It shows the same $\epsilon $ will cause different effects for noisy policy, it benefits the top two initial distribution and hurts the bottom two distributions. So large $\epsilon $ value (0.8) only helps with large divergence of initial policy and optimal policy. }}{9}}
+\newlabel{fig:noise1}{{6}{9}}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces $\epsilon $-greedy policy with different $\epsilon $ value and same initial and same optimal distribution. Larger $\epsilon $ value benefits more for large divergence between the optimal policy and the initial policy. }}{9}}
 \newlabel{fig:noise2}{{7}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Experiments with different initialized policy for DDPG on \textit  {Reacher} task}}{9}}
-\newlabel{fig:noise3}{{8}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Experiments with different initialized policy for DDPG on \textit  {Reacher} task}}{10}}
-\newlabel{fig:noise4}{{9}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Experiments with different initialized policy for DDPG on \textit  {Reacher} task}}{11}}
-\newlabel{fig:noise5}{{10}{11}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.7}DDPG with Policy Replacement -- Pre-train the Critic}{12}}
-\newlabel{pretrain}{{3.2.7}{12}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.8}DDPG with Policy Replacement -- Conclusions}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Comparison of initialized DDPG with/without pre-training the critic on \textit  {Reacher} task. The green line is the mean reward of initial policy trained with supervised learning.}}{13}}
-\newlabel{fig:pretrain}{{11}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Experiments with different initialized policy for DDPG on \textit  {Reacher} task}}{10}}
+\newlabel{fig:noise3}{{8}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.7}DDPG with Policy Replacement -- Pre-train the Critic}{10}}
+\newlabel{pretrain}{{3.2.7}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Experiments with different initialized policy for DDPG on \textit  {Reacher} task}}{11}}
+\newlabel{fig:noise4}{{9}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Experiments with different initialized policy for DDPG on \textit  {Reacher} task}}{12}}
+\newlabel{fig:noise5}{{10}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.8}DDPG with Policy Replacement -- Conclusions}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.9}PPO with Policy Replacement}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Comparison of initialized DDPG with/without pre-training the critic on \textit  {Reacher} task. The green line is the mean reward of initial policy trained with supervised learning.}}{14}}
+\newlabel{fig:pretrain}{{11}{14}}
 \citation{johannink2018residual}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.9}PPO with Policy Replacement}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Comparisons of PPO with or without initialized policy and preheating process with different noise scale.}}{14}}
-\newlabel{fig:ppo1}{{12}{14}}
-\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Comparison of different actor learning rates for initialized PPO with preheating process on \textit  {Reacher} task.}}{15}}
-\newlabel{fig:ppo2}{{13}{15}}
-\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Comparison of different noise base for initialized PPO with preheating process on \textit  {Reacher} task.}}{16}}
-\newlabel{fig:ppo3}{{14}{16}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Initialized Reinforcement Learning with Supervised Learning Policy -- Residual Policy Learning}{17}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}DDPG with Residual Policy Learning}{17}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Comparison of Residual Learning and Policy Replacement}{17}}
-\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Easy-to-reach goal position used in comparison.}}{18}}
-\newlabel{fig:rpl1}{{15}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Comparison of non-initialized policy and initialized policy with residual learning and policy replacement for DDPG with an easy-to-reach goal position. The bold lines are moving average of episode rewards during learning process. The initialized policy has a preheating process of 600 steps.}}{18}}
-\newlabel{fig:rpl2}{{16}{18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Comparison of residual learning and policy replacement for DDPG with another goal position.}}{19}}
-\newlabel{fig:rpl3}{{17}{19}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Modelling Analysis of Residual Policy Learning}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Comparisons of PPO with or without initialized policy and preheating process with different noise scale.}}{15}}
+\newlabel{fig:ppo1}{{12}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Initialized Reinforcement Learning with Supervised Learning Policy -- Residual Policy Learning}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Comparison of different actor learning rates for initialized PPO with preheating process on \textit  {Reacher} task.}}{16}}
+\newlabel{fig:ppo2}{{13}{16}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Comparison of different noise base for initialized PPO with preheating process on \textit  {Reacher} task.}}{17}}
+\newlabel{fig:ppo3}{{14}{17}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}DDPG with Residual Policy Learning}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Comparison of Residual Learning and Policy Replacement}{18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Easy-to-reach goal position used in comparison.}}{19}}
+\newlabel{fig:rpl1}{{15}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Comparison of non-initialized policy and initialized policy with residual learning and policy replacement for DDPG with an easy-to-reach goal position. The bold lines are moving average of episode rewards during learning process. The initialized policy has a preheating process of 600 steps.}}{19}}
+\newlabel{fig:rpl2}{{16}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Comparison of residual learning and policy replacement for DDPG with another goal position.}}{20}}
+\newlabel{fig:rpl3}{{17}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Modelling Analysis of Residual Policy Learning}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Meta-learning as Initialization for Reinforcement Learning}{21}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}MAML and Reptile}{21}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Reptile + PPO}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Off-Policy Reinforcement Learning with Demonstrations}{21}}
 \bibstyle{unsrt}
 \bibdata{ref}
 \bibcite{johannink2018residual}{{1}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Meta-learning as Initialization for Reinforcement Learning}{20}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}MAML and Reptile}{20}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Reptile + PPO}{20}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Off-Policy Reinforcement Learning with Demonstrations}{20}}
-\@writefile{toc}{\contentsline {section}{Bibliography}{20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces $\textit  {Reacher}$ environment with two penalty areas.}}{21}}
-\newlabel{fig:ddpgfd0}{{18}{21}}
-\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Comparison of DDPG from demonstrations with different feeding approaches (without prioritized experience replay) and vanilla DDPG. The blue line is feeding demonstrations for every epoch for the whole training process (500 epochs); the green line is feeding demonstrations for every epoch for the first 50 epochs; the yellow line is feeding demonstrations for every 50 epochs for the whole training process; the black line is feeding demonstrations for every 100 epochs for the whole training process; the red line is vanilla DDPG without using demonstrations. }}{22}}
-\newlabel{fig:ddpgfd1}{{19}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces $\textit  {Reacher}$ environment with two penalty areas.}}{22}}
+\newlabel{fig:ddpgfd0}{{18}{22}}
+\@writefile{toc}{\contentsline {section}{Bibliography}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Comparison of DDPG from demonstrations with different feeding approaches (without prioritized experience replay) and vanilla DDPG. The blue line is feeding demonstrations for every epoch for the whole training process (500 epochs); the green line is feeding demonstrations for every epoch for the first 50 epochs; the yellow line is feeding demonstrations for every 50 epochs for the whole training process; the black line is feeding demonstrations for every 100 epochs for the whole training process; the red line is vanilla DDPG without using demonstrations. }}{23}}
+\newlabel{fig:ddpgfd1}{{19}{23}}

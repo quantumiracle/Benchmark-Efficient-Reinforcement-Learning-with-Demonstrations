@@ -4,3 +4,7 @@ Try to figure out if there is an alternative approach for prioritized experience
 
 * `data_ini2goal.p`: training data for reacher env mapping from arbitrary initial positions to arbitrary goal positions.
 * `predict_test_prioritized.py`: supervised training with loss sensitivity.
+
+Experiments show that this does not work! 
+
+Reasons: Retrain the large loss samples will make neural network overfit on this batch of samples, reducing loss of this batch but increasing loss of other batches, generally making training less efficient instead of more efficient as the prioritized experience replay approach (retrain at next training epoch). Random training is important!

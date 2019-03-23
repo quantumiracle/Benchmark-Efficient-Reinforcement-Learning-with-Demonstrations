@@ -136,6 +136,9 @@ def learn(save_path, network, env,
     epoch_actions = []
     epoch_qs = []
     epoch_episodes = 0
+    ''' feeding the separate demonstration buffer with demonstration dataset '''
+    agent.feed_demon_buffer()
+
     for epoch in range(nb_epochs):
         print(nb_epochs)
         # obs, env_state = env.reset()
@@ -147,8 +150,10 @@ def learn(save_path, network, env,
         # if epoch < 50:
             # agent.feed_demon2memory()
 
-        if epoch % 100 ==0:
-            agent.feed_demon2memory()
+        # if epoch % 100 ==0:
+        #     agent.feed_demon2memory()
+
+
 
         for cycle in range(nb_epoch_cycles):
 

@@ -291,9 +291,11 @@ if args.train:
              then the batch needs further learning, therefore repeatedly train it until this batch_train_loss is small
              use this method instead of prioritized experience replay 
              '''
-            # while train_loss >= train_loss_epoch_mean and rep < 3: 
-            while rep < 3: 
-
+            ''' 1. repeat for large loss batch '''
+            while train_loss >= train_loss_epoch_mean and rep < 30:   # the threshold value is chosen to be average loss of last training epoch, max 30 repeatation
+            ''' 2. just repeat '''
+            # while rep < 3: 
+            ''' 3. no repeat '''
             # while rep < 1:
                 rep+=1
                 # if rep >=2:

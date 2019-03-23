@@ -92,6 +92,19 @@ The reward function for each step is defined as:
 where $R_0=100$ is the maximum of reward value, so $R\in(0,100]$
 
 \subsubsection{Inverse Kinematics}
+Inverse kinematics is a inverse process of forward kinematics, to derive the joint angle values with respect to the end position. Considering the end position as a transformation function of joint angels: $\mathcal{T}(\theta, L)$, where $\{\theta_i\}$ are joint angles and $\{L_i\}$ are link lengths, the forward kinematics is:
+\begin{equation}
+ (x_{end}, y_{end}) = \mathcal{T}(\theta, L)
+\end{equation}
+while the inverse kinematics needs the Jacobian of end position with respect to the joint angles parameters $\{\theta_i\}$, and to reach a specific target position $(x_T, y_T)$, the expected change of angle values are:
+\begin{equation}
+	(\Delta(x_{end}), \Delta(y_{end})) = \alpha (\frac{\partial(\mathcal{T}(\theta, \L))}{\partial \theta})^{-1} \cdot (x_T, y_T)
+\end{equation}
+where $\alpha$ is the step size. 
+
+And in practice, we usually use Moore–Penrose pseudo-inverse for calculation of the inverse Jacobian, which will induce approximation error in trajectories.
+
+
 
 \subsubsection{Supervised Learning Policy as Initialization}
 We apply a neural network of 5 layers to train an initialization policy, with the data generated from inverse kinematics. The inputs of neural network are positions of joints and position of the target.  Each hidden layer contains 100 nodes and uses ReLu as activation function. The output layer is Tanh activated with a scaling factor of 360, to make outputs range from -360 to 360 degree as a reasonable action value of the joints. The AdamOptimizer is applied with stochastic gradient descent in the training process. The training curve is shown in Fig. 3. Note that the y-axis is transformed to be in range [-1,1] instead of [-360, 360] as the mean squared error per action value .

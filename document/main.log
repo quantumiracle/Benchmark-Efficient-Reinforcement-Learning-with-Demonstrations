@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  3 MAR 2019 18:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  23 MAR 2019 17:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -683,83 +683,76 @@ File: img/reacher1.png Graphic file (type png)
 Package pdftex.def Info: img/reacher1.png  used on input line 84.
 (pdftex.def)             Requested size: 216.57077pt x 227.17044pt.
  [3 <./img/reacher.png>]
+
+LaTeX Warning: Command \L invalid in math mode on input line 101.
+
 <img/supervised.png, id=24, 462.528pt x 346.896pt>
 File: img/supervised.png Graphic file (type png)
 <use img/supervised.png>
-Package pdftex.def Info: img/supervised.png  used on input line 100.
+Package pdftex.def Info: img/supervised.png  used on input line 113.
 (pdftex.def)             Requested size: 370.02289pt x 277.51717pt.
- [4 <./img/reacher1.png>] [5 <./img/supervised.png>]
-<img/ddpg_compare1.pdf, id=38, 578.16pt x 433.62pt>
+[4 <./img/reacher1.png>] [5 <./img/supervised.png>]
+<img/ddpg_compare1.pdf, id=39, 578.16pt x 433.62pt>
 File: img/ddpg_compare1.pdf Graphic file (type pdf)
 <use img/ddpg_compare1.pdf>
-Package pdftex.def Info: img/ddpg_compare1.pdf  used on input line 124.
+Package pdftex.def Info: img/ddpg_compare1.pdf  used on input line 137.
 (pdftex.def)             Requested size: 462.52863pt x 346.89647pt.
 
-Overfull \hbox (18.95015pt too wide) in paragraph at lines 124--125
+Overfull \hbox (18.95015pt too wide) in paragraph at lines 137--138
  [][] 
  []
 
-[6 <./img/ddpg_compare1.pdf>]
-<img/noise2.png, id=80, 433.62pt x 289.08pt>
+[6] [7 <./img/ddpg_compare1.pdf>]
+<img/noise2.png, id=85, 433.62pt x 289.08pt>
 File: img/noise2.png Graphic file (type png)
 <use img/noise2.png>
-Package pdftex.def Info: img/noise2.png  used on input line 152.
+Package pdftex.def Info: img/noise2.png  used on input line 165.
 (pdftex.def)             Requested size: 346.89647pt x 231.2643pt.
-<img/noise28.pdf, id=81, 433.62pt x 289.08pt>
-File: img/noise28.pdf Graphic file (type pdf)
-<use img/noise28.pdf>
-Package pdftex.def Info: img/noise28.pdf  used on input line 159.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/noise38.pdf, id=82, 433.62pt x 289.08pt>
-File: img/noise38.pdf Graphic file (type pdf)
-<use img/noise38.pdf>
-Package pdftex.def Info: img/noise38.pdf  used on input line 160.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/noise48.pdf, id=83, 433.62pt x 289.08pt>
-File: img/noise48.pdf Graphic file (type pdf)
-<use img/noise48.pdf>
-Package pdftex.def Info: img/noise48.pdf  used on input line 161.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/noise58.pdf, id=84, 433.62pt x 289.08pt>
-File: img/noise58.pdf Graphic file (type pdf)
-<use img/noise58.pdf>
-Package pdftex.def Info: img/noise58.pdf  used on input line 162.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/noise22.pdf, id=85, 433.62pt x 289.08pt>
-File: img/noise22.pdf Graphic file (type pdf)
-<use img/noise22.pdf>
-Package pdftex.def Info: img/noise22.pdf  used on input line 169.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/noise24.pdf, id=86, 433.62pt x 289.08pt>
-File: img/noise24.pdf Graphic file (type pdf)
-<use img/noise24.pdf>
-Package pdftex.def Info: img/noise24.pdf  used on input line 170.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/noise26.pdf, id=87, 433.62pt x 289.08pt>
-File: img/noise26.pdf Graphic file (type pdf)
-<use img/noise26.pdf>
-Package pdftex.def Info: img/noise26.pdf  used on input line 171.
-(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/noise28.pdf, id=86, 433.62pt x 289.08pt>
 File: img/noise28.pdf Graphic file (type pdf)
 <use img/noise28.pdf>
 Package pdftex.def Info: img/noise28.pdf  used on input line 172.
 (pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
-<img/ddpg_compare3.pdf, id=88, 1084.05pt x 722.7pt>
+<img/noise38.pdf, id=87, 433.62pt x 289.08pt>
+File: img/noise38.pdf Graphic file (type pdf)
+<use img/noise38.pdf>
+Package pdftex.def Info: img/noise38.pdf  used on input line 173.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/noise48.pdf, id=88, 433.62pt x 289.08pt>
+File: img/noise48.pdf Graphic file (type pdf)
+<use img/noise48.pdf>
+Package pdftex.def Info: img/noise48.pdf  used on input line 174.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/noise58.pdf, id=89, 433.62pt x 289.08pt>
+File: img/noise58.pdf Graphic file (type pdf)
+<use img/noise58.pdf>
+Package pdftex.def Info: img/noise58.pdf  used on input line 175.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/noise22.pdf, id=90, 433.62pt x 289.08pt>
+File: img/noise22.pdf Graphic file (type pdf)
+<use img/noise22.pdf>
+Package pdftex.def Info: img/noise22.pdf  used on input line 182.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/noise24.pdf, id=91, 433.62pt x 289.08pt>
+File: img/noise24.pdf Graphic file (type pdf)
+<use img/noise24.pdf>
+Package pdftex.def Info: img/noise24.pdf  used on input line 183.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/noise26.pdf, id=92, 433.62pt x 289.08pt>
+File: img/noise26.pdf Graphic file (type pdf)
+<use img/noise26.pdf>
+Package pdftex.def Info: img/noise26.pdf  used on input line 184.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+File: img/noise28.pdf Graphic file (type pdf)
+<use img/noise28.pdf>
+Package pdftex.def Info: img/noise28.pdf  used on input line 185.
+(pdftex.def)             Requested size: 173.44492pt x 115.62994pt.
+<img/ddpg_compare3.pdf, id=93, 1084.05pt x 722.7pt>
 File: img/ddpg_compare3.pdf Graphic file (type pdf)
 <use img/ddpg_compare3.pdf>
-Package pdftex.def Info: img/ddpg_compare3.pdf  used on input line 181.
+Package pdftex.def Info: img/ddpg_compare3.pdf  used on input line 194.
 (pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
-<img/ddpg_compare4.pdf, id=89, 1084.05pt x 722.7pt>
-File: img/ddpg_compare4.pdf Graphic file (type pdf)
-<use img/ddpg_compare4.pdf>
-Package pdftex.def Info: img/ddpg_compare4.pdf  used on input line 188.
-(pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
-<img/ddpg_compare5.pdf, id=90, 1084.05pt x 722.7pt>
-File: img/ddpg_compare5.pdf Graphic file (type pdf)
-<use img/ddpg_compare5.pdf>
-Package pdftex.def Info: img/ddpg_compare5.pdf  used on input line 195.
-(pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
- [7] [8 <./img/noise2.png> <./img/noise28.pdf> <./img/noise38.pdf
+ [8 <./img/noise2.png>] [9 <./img/noise28.pdf> <./img/noise38.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./img/noise38.pdf): PDF inclusion: mult
 iple pdfs with page group included in a single page
@@ -771,7 +764,11 @@ iple pdfs with page group included in a single page
 
 pdfTeX warning: /usr/bin/pdflatex (file ./img/noise58.pdf): PDF inclusion: mult
 iple pdfs with page group included in a single page
->] [9 <./img/noise22.pdf> <./img/noise24.pdf
+> <./img/noise22.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./img/noise22.pdf): PDF inclusion: mult
+iple pdfs with page group included in a single page
+> <./img/noise24.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./img/noise24.pdf): PDF inclusion: mult
 iple pdfs with page group included in a single page
@@ -779,63 +776,72 @@ iple pdfs with page group included in a single page
 
 pdfTeX warning: /usr/bin/pdflatex (file ./img/noise26.pdf): PDF inclusion: mult
 iple pdfs with page group included in a single page
-> <./img/ddpg_compare3.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./img/ddpg_compare3.pdf): PDF inclusion
-: multiple pdfs with page group included in a single page
->] [10 <./img/ddpg_compare4.pdf>] [11 <./img/ddpg_compare5.pdf>]
-<img/ddpg_compare2.pdf, id=471, 867.24pt x 578.16pt>
+>]
+<img/ddpg_compare4.pdf, id=345, 1084.05pt x 722.7pt>
+File: img/ddpg_compare4.pdf Graphic file (type pdf)
+<use img/ddpg_compare4.pdf>
+Package pdftex.def Info: img/ddpg_compare4.pdf  used on input line 201.
+(pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
+<img/ddpg_compare5.pdf, id=346, 1084.05pt x 722.7pt>
+File: img/ddpg_compare5.pdf Graphic file (type pdf)
+<use img/ddpg_compare5.pdf>
+Package pdftex.def Info: img/ddpg_compare5.pdf  used on input line 208.
+(pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
+ [10 <./img/ddpg_compare3.pdf>] [11 <./img/ddpg_compare4.pdf>] [12 <./img/ddpg_
+compare5.pdf>]
+<img/ddpg_compare2.pdf, id=475, 867.24pt x 578.16pt>
 File: img/ddpg_compare2.pdf Graphic file (type pdf)
 <use img/ddpg_compare2.pdf>
-Package pdftex.def Info: img/ddpg_compare2.pdf  used on input line 211.
+Package pdftex.def Info: img/ddpg_compare2.pdf  used on input line 224.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
- [12] [13 <./img/ddpg_compare2.pdf>]
-<img/ppo_compare2.pdf, id=518, 1084.05pt x 722.7pt>
+ [13] [14 <./img/ddpg_compare2.pdf>]
+<img/ppo_compare2.pdf, id=522, 1084.05pt x 722.7pt>
 File: img/ppo_compare2.pdf Graphic file (type pdf)
 <use img/ppo_compare2.pdf>
-Package pdftex.def Info: img/ppo_compare2.pdf  used on input line 231.
+Package pdftex.def Info: img/ppo_compare2.pdf  used on input line 244.
 (pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
-<img/ppo_compare3.pdf, id=519, 1084.05pt x 722.7pt>
+<img/ppo_compare3.pdf, id=523, 1084.05pt x 722.7pt>
 File: img/ppo_compare3.pdf Graphic file (type pdf)
 <use img/ppo_compare3.pdf>
-Package pdftex.def Info: img/ppo_compare3.pdf  used on input line 238.
+Package pdftex.def Info: img/ppo_compare3.pdf  used on input line 251.
 (pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
-<img/ppo_compare4.pdf, id=520, 1084.05pt x 722.7pt>
+<img/ppo_compare4.pdf, id=524, 1084.05pt x 722.7pt>
 File: img/ppo_compare4.pdf Graphic file (type pdf)
 <use img/ppo_compare4.pdf>
-Package pdftex.def Info: img/ppo_compare4.pdf  used on input line 247.
+Package pdftex.def Info: img/ppo_compare4.pdf  used on input line 260.
 (pdftex.def)             Requested size: 433.61232pt x 289.07487pt.
- [14 <./img/ppo_compare2.pdf>] [15 <./img/ppo_compare3.pdf>] [16 <./img/ppo_com
+ [15 <./img/ppo_compare2.pdf>] [16 <./img/ppo_compare3.pdf>] [17 <./img/ppo_com
 pare4.pdf>]
-<img/goal_position.png, id=647, 737.75626pt x 888.31876pt>
+<img/goal_position.png, id=651, 737.75626pt x 888.31876pt>
 File: img/goal_position.png Graphic file (type png)
 <use img/goal_position.png>
-Package pdftex.def Info: img/goal_position.png  used on input line 284.
+Package pdftex.def Info: img/goal_position.png  used on input line 297.
 (pdftex.def)             Requested size: 147.54863pt x 177.6606pt.
-<img/res_ddpg3.pdf, id=648, 722.7pt x 578.16pt>
+<img/res_ddpg3.pdf, id=652, 722.7pt x 578.16pt>
 File: img/res_ddpg3.pdf Graphic file (type pdf)
 <use img/res_ddpg3.pdf>
-Package pdftex.def Info: img/res_ddpg3.pdf  used on input line 292.
+Package pdftex.def Info: img/res_ddpg3.pdf  used on input line 305.
 (pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
-<img/res_ddpg2.pdf, id=649, 722.7pt x 578.16pt>
+<img/res_ddpg2.pdf, id=653, 722.7pt x 578.16pt>
 File: img/res_ddpg2.pdf Graphic file (type pdf)
 <use img/res_ddpg2.pdf>
-Package pdftex.def Info: img/res_ddpg2.pdf  used on input line 300.
+Package pdftex.def Info: img/res_ddpg2.pdf  used on input line 313.
 (pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
- [17] [18 <./img/goal_position.png> <./img/res_ddpg3.pdf>] [19 <./img/res_ddpg2
+ [18] [19 <./img/goal_position.png> <./img/res_ddpg3.pdf>] [20 <./img/res_ddpg2
 .pdf>]
-<img/ddpgfd_env.png, id=748, 951.555pt x 919.435pt>
+<img/ddpgfd_env.png, id=752, 951.555pt x 919.435pt>
 File: img/ddpgfd_env.png Graphic file (type png)
 <use img/ddpgfd_env.png>
-Package pdftex.def Info: img/ddpgfd_env.png  used on input line 336.
+Package pdftex.def Info: img/ddpgfd_env.png  used on input line 349.
 (pdftex.def)             Requested size: 285.4687pt x 275.83263pt.
-<img/ddpgfd1.pdf, id=749, 722.7pt x 578.16pt>
+ [21]
+<img/ddpgfd1.pdf, id=756, 722.7pt x 578.16pt>
 File: img/ddpgfd1.pdf Graphic file (type pdf)
 <use img/ddpgfd1.pdf>
-Package pdftex.def Info: img/ddpgfd1.pdf  used on input line 343.
+Package pdftex.def Info: img/ddpgfd1.pdf  used on input line 356.
 (pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
- (./main.bbl) [20] [21 <./img/ddpgfd_env.png>] [22 <./img/ddpgfd1.pdf>] (./main
-.aux)
+
+(./main.bbl) [22 <./img/ddpgfd_env.png>] [23 <./img/ddpgfd1.pdf>] (./main.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -843,7 +849,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  4770 strings out of 494847
  62027 string characters out of 6179080
- 142781 words of memory out of 5000000
+ 139782 words of memory out of 5000000
  7965 multiletter control sequences out of 15000+600000
  13154 words of font info for 50 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
@@ -861,10 +867,10 @@ s/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on main.pdf (22 pages, 748987 bytes).
+Output written on main.pdf (23 pages, 751833 bytes).
 PDF statistics:
- 844 PDF objects out of 1000 (max. 8388607)
- 195 compressed objects within 2 object streams
+ 848 PDF objects out of 1000 (max. 8388607)
+ 197 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  121 words of extra memory for PDF output out of 10000 (max. 10000000)
 
