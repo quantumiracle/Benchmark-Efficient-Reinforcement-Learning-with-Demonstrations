@@ -6,4 +6,5 @@
 - `inverse_kinematics_demon_2obstacle_noise.py`: generate noisy demonstrations ([state, action]) in data file to train the nn in `predict_test.py`.
 - `inverse_kinematics_demon_2obstacle.py`: generate no-noise demonstrations  ([state, action]) in data file to train the nn in `predict_test.py`.
 - `data_memory2`: data file generated from `inverse_kinematics_demon_2obstacle_noise_memory.py` with 50 episodes and 20 steps per episode.
+- `./data_memory2_21steps.p`: data file generated from `inverse_kinematics_demon_2obstacle_noise_memory.py` with 50 episodes and 21 steps per episode, noise_scale = 0.5 (almost accurate when noise_scale is 0.0).  
 - DDPGfD codes are training DDPG to learn from demonstrations, feeding demonstration trajectories into memory.

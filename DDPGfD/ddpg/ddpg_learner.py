@@ -63,7 +63,7 @@ def get_perturbed_actor_updates(actor, perturbed_actor, param_noise_stddev):
 
 
 class DDPG(object):
-    def __init__(self, actor, critic, memory, observation_shape, action_shape, param_noise=None, action_noise=None,
+    def __init__(self, actor, critic, memory, demon_buffer, observation_shape, action_shape, param_noise=None, action_noise=None,
         gamma=0.99, tau=0.001, normalize_returns=False, enable_popart=False, normalize_observations=True,
         batch_size=128, observation_range=(-1000., 1000.), action_range=(-50., 50.), return_range=(-np.inf, np.inf),
         adaptive_param_noise=True, adaptive_param_noise_policy_threshold=.1,
@@ -81,7 +81,8 @@ class DDPG(object):
         self.gamma = gamma
         self.tau = tau
         self.memory = memory
-        self.demon_memory = memory
+        '''have to use 2 memory here, simply demon_memory = memory will cause a common instantiated memory shared by two variables'''
+        self.demon_memory = demon_buffer  
         self.normalize_observations = normalize_observations
         self.normalize_returns = normalize_returns
         self.action_noise = action_noise
@@ -289,19 +290,19 @@ class DDPG(object):
                 self.obs_rms.update(np.array([obs0[b]]))
 
     def train(self):
-        demons_memory_ratio = 0.0  # sampled batch size ratio of demonstration over exploration
+        demons_memory_ratio = 0.0  # the ratio of demonstrations over all batches sampled
         # Get a batch from memory
         batch = self.memory.sample(batch_size=int(2*self.batch_size*(1-demons_memory_ratio)))
         # Get a batch from demonstration buffer
         demon_batch = self.demon_memory.sample(batch_size=int(2*self.batch_size*demons_memory_ratio))
+        # print('memory: ', batch['obs1'].shape, 'demons: ', demon_batch['obs1'].shape)
         # concatenate two sampled batches
         batch['obs0'] = np.concatenate((batch['obs0'], demon_batch['obs0']))
         batch['rewards'] = np.concatenate((batch['rewards'], demon_batch['rewards']))
         batch['terminals1'] = np.concatenate((batch['terminals1'], demon_batch['terminals1']))
         batch['obs1'] = np.concatenate((batch['obs1'], demon_batch['obs1']))
         batch['actions'] = np.concatenate((batch['actions'], demon_batch['actions']))
-
-        # print(batch['obs1'].shape, batch['rewards'].shape, batch['terminals1'].shape )
+        # batch = demon_batch
 
         if self.normalize_returns and self.enable_popart:
             old_mean, old_std, target_Q = self.sess.run([self.ret_rms.mean, self.ret_rms.std, self.target_Q], feed_dict={
@@ -411,16 +412,16 @@ class DDPG(object):
 
 
 
-    def feed_demon2memory(self):
-        """
-        feed demonstrations from data file into memory
-        """
-        with open('data_memory2_21steps.p', 'rb') as f:
-            data = pickle.load(f)
-        for _, episode in enumerate(data):
-            for _, step in enumerate(episode):
-                # state, action, reward, new_state, done
-                self.store_transition(np.array(step[0]), step[1], step[2], step[3], step[4])
+    # def feed_demon2memory(self):
+    #     """
+    #     feed demonstrations from data file into memory
+    #     """
+    #     with open('data_memory2_21steps.p', 'rb') as f:
+    #         data = pickle.load(f)
+    #     for _, episode in enumerate(data):
+    #         for _, step in enumerate(episode):
+    #             # state, action, reward, new_state, done
+    #             self.store_transition(np.array(step[0]), step[1], step[2], step[3], step[4])
     
     
     

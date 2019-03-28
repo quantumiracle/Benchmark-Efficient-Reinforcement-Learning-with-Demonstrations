@@ -45,7 +45,7 @@ def learn(save_path, network, env,
           clip_norm=None,
           nb_train_steps=3, # per epoch cycle and MPI worker,  50
           nb_eval_steps=1,  #100
-          batch_size=640, # per MPI worker
+          batch_size=64, # per MPI worker
           tau=0.01,
           eval_env=None,
           param_noise_adaption_interval=3, #50
@@ -71,6 +71,8 @@ def learn(save_path, network, env,
     # assert (np.abs(env.action_space.low) == env.action_space.high).all()  # we assume symmetric actions.
 
     memory = Memory(limit=int(1e6), action_shape=action_shape, observation_shape=observation_shape)
+    demon_buffer = Memory(limit=int(1e6), action_shape=action_shape, observation_shape=observation_shape)
+
     critic = Critic(network=network, **network_kwargs)
     actor = Actor(nb_actions, network=network, **network_kwargs)
 
@@ -97,7 +99,7 @@ def learn(save_path, network, env,
     # max_action = env.action_space.high
     # logger.info('scaling actions by {} before executing in env'.format(max_action))
 
-    agent = DDPG(actor, critic, memory, observation_shape, action_shape,
+    agent = DDPG(actor, critic, memory, demon_buffer, observation_shape, action_shape,
         gamma=gamma, tau=tau, normalize_returns=normalize_returns, normalize_observations=normalize_observations,
         batch_size=batch_size, action_noise=action_noise, param_noise=param_noise, critic_l2_reg=critic_l2_reg,
         actor_lr=actor_lr, critic_lr=critic_lr, enable_popart=popart, clip_norm=clip_norm,
@@ -148,7 +150,7 @@ def learn(save_path, network, env,
         ''' feed memory with demonstrations'''
         # agent.feed_demon2memory()
         # if epoch < 50:
-            # agent.feed_demon2memory()
+        #     agent.feed_demon2memory()
 
         # if epoch % 100 ==0:
         #     agent.feed_demon2memory()
@@ -171,6 +173,7 @@ def learn(save_path, network, env,
                 epoch_actions.append(action)
                 epoch_qs.append(q)
                 b=1.
+                # if epoch <4:
                 agent.store_transition(obs, action, r, new_obs, done) #the batched data will be unrolled in memory.py's append.
                 obs = new_obs
 
@@ -285,7 +288,7 @@ def learn(save_path, network, env,
 
 
 
-
+# test not modify yet
 def testing(save_path, network, env,
           seed=None,
           total_timesteps=None,

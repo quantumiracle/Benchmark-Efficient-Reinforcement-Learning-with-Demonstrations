@@ -1,14 +1,3 @@
-"""
-A simple version of Proximal Policy Optimization (PPO) using single thread.
-Based on:
-1. Emergence of Locomotion Behaviours in Rich Environments (Google Deepmind): [https://arxiv.org/abs/1707.02286]
-2. Proximal Policy Optimization Algorithms (OpenAI): [https://arxiv.org/abs/1707.06347]
-View more on my tutorial website: https://morvanzhou.github.io/tutorials
-Dependencies:
-tensorflow r1.2
-gym 0.9.2
-"""
-
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -27,7 +16,7 @@ S_DIM, A_DIM = 8,2
 METHOD = [
     dict(name='kl_pen', kl_target=0.01, lam=0.5),   # KL penalty
     dict(name='clip', epsilon=0.2),                 # Clipped surrogate objective, find this is better
-][0]        # choose the method for optimization
+][1]        # choose the method for optimization
 
 
 class PPO(object):
@@ -125,9 +114,9 @@ class PPO(object):
     def choose_action(self, s):
         s = s[np.newaxis, :]
         a ,mu, sigma= self.sess.run([self.sample_op, self.mu, self.sigma], {self.tfs: s})
-        print('s: ',s)
-        print('a: ', a)
-        print('mu, sigma: ', mu,sigma)
+        # print('s: ',s)
+        # print('a: ', a)
+        # print('mu, sigma: ', mu,sigma)
         return np.clip(a[0], -360, 360)
 
     def get_v(self, s):

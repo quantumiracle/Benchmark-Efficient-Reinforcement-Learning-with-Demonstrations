@@ -1,14 +1,3 @@
-"""
-A simple version of Proximal Policy Optimization (PPO) using single thread.
-Based on:
-1. Emergence of Locomotion Behaviours in Rich Environments (Google Deepmind): [https://arxiv.org/abs/1707.02286]
-2. Proximal Policy Optimization Algorithms (OpenAI): [https://arxiv.org/abs/1707.06347]
-View more on my tutorial website: https://morvanzhou.github.io/tutorials
-Dependencies:
-tensorflow r1.2
-gym 0.9.2
-"""
-
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,8 +5,8 @@ import gym
 from env_2 import Reacher_for2 as Reacher
 from copy import copy
 import argparse
-ITR=100  # number of tasks
-EP_MAX = 2000  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
+ITR=1000  # number of tasks
+EP_MAX = 20  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
 EP_LEN = 20
 GAMMA = 0.9
 A_LR = 1e-4
@@ -201,7 +190,7 @@ class PPO(object):
 
 def sample_task():
     range_pose=0.3
-    target_pose=np.random.rand(2)*range_pose + [0.5, 0.5]
+    target_pose=(2*np.random.rand(2)-1)*range_pose + [0.5, 0.5]
     screen_size=1000
     target_pose=target_pose*screen_size
 
@@ -219,6 +208,7 @@ if args.train:
     test_env, t=sample_task()
     itr_test_rewards=[]
     for itr in range (ITR):
+        # randomly sample a task (different target position)
         np.random.seed(itr)
         env, target_position =sample_task()
         print('Task {}: target position {}'.format(itr+1, target_position))
@@ -230,7 +220,7 @@ if args.train:
             s=s/100. # scale the inputs
             buffer_s, buffer_a, buffer_r = [], [], []
             ep_r = 0
-            for t in range(EP_LEN):    # in one episode
+            for t in range(EP_LEN):    #  steps in one episode
                 # env.render()
                 a = ppo.choose_action(s)
                 s_, r, done = env.step(a)
@@ -329,7 +319,8 @@ if args.train:
         itr_test_rewards.append(np.average(np.array(all_ep_r)))
         plt.plot(np.arange(len(itr_test_rewards)), itr_test_rewards)
         plt.savefig('./ppo_reptile.png')
-    ppo.save(model_path)
+        if itr%10 == 0:
+            ppo.save(model_path)
 
 if args.test:
 
@@ -339,6 +330,7 @@ if args.test:
     ppo.load(model_path)
     print('-------------- TEST --------------- ')
     for ep in range(EP_MAX):
+        print('Episode: ', ep)
         s = test_env.reset()
         s=s/100. # scale the inputs
         buffer_s, buffer_a, buffer_r = [], [], []

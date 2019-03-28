@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  23 MAR 2019 17:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.1.20)  26 MAR 2019 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -840,17 +840,23 @@ File: img/ddpgfd1.pdf Graphic file (type pdf)
 <use img/ddpgfd1.pdf>
 Package pdftex.def Info: img/ddpgfd1.pdf  used on input line 356.
 (pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
+<img/ddpgfd2.pdf, id=757, 722.7pt x 578.16pt>
+File: img/ddpgfd2.pdf Graphic file (type pdf)
+<use img/ddpgfd2.pdf>
+Package pdftex.def Info: img/ddpgfd2.pdf  used on input line 363.
+(pdftex.def)             Requested size: 361.3491pt x 289.07928pt.
 
-(./main.bbl) [22 <./img/ddpgfd_env.png>] [23 <./img/ddpgfd1.pdf>] (./main.aux)
+(./main.bbl) [22 <./img/ddpgfd_env.png>] [23 <./img/ddpgfd1.pdf>] [24 <./img/dd
+pgfd2.pdf>] (./main.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 4770 strings out of 494847
- 62027 string characters out of 6179080
+ 4776 strings out of 494847
+ 62154 string characters out of 6179080
  139782 words of memory out of 5000000
- 7965 multiletter control sequences out of 15000+600000
+ 7970 multiletter control sequences out of 15000+600000
  13154 words of font info for 50 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  41i,8n,35p,1528b,229s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -867,10 +873,10 @@ s/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
 9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on main.pdf (23 pages, 751833 bytes).
+Output written on main.pdf (24 pages, 799401 bytes).
 PDF statistics:
- 848 PDF objects out of 1000 (max. 8388607)
- 197 compressed objects within 2 object streams
+ 893 PDF objects out of 1000 (max. 8388607)
+ 205 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 121 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 126 words of extra memory for PDF output out of 10000 (max. 10000000)
 

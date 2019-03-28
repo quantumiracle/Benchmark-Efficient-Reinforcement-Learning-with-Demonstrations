@@ -142,7 +142,7 @@ reach_step = 50 # number of steps to reach each target
 div_step = 10 # number of steps divided for each goal trajectory, total step for each episode is 2*div_step as 2 goals for each episode
 train_set=[]
 
-data_file = open("data_memory2_21steps.p","wb")  # one sample in file, with number of steps = 2*div_step
+data_file = open("data_memory2_2111steps.p","wb")  # one sample in file, with number of steps = 2*div_step
 
 # use [:] to prevent copying pointer instead of copying the array, 
 # A=B (array), if A is changed with like += ,etc operations, will cause B to be changed!
@@ -152,7 +152,7 @@ joint_angles=start_joint_angles[:]
 sample_batch=0
 target_pos = INTER_GOAL  # initial goal
 
-noise_scale = 0.5  # choose noise range doesn't hurt the trajectory to be an expert one, action range 360
+noise_scale = 0.5  # choose noise range doesn't hurt the trajectory to be an expert one, action range 360;
 num_episodes = 50  # number of episode samples generated
 
 # another reacher used as generated demonstration trajectories running, 
@@ -190,6 +190,7 @@ for ep in range(num_episodes):
             state=get_state(start_joint_angles,target_pos)
             print('start state: ', state)
             # step_joint_angles=start_joint_angles
+
             for i in range (div_step+1):
                 action_noise = np.random.normal(0, noise_scale, action.shape[0])
                 action = action + action_noise  # noise injection for action
@@ -205,7 +206,9 @@ for ep in range(num_episodes):
                 ''' display the trajectory of data samples in real (x-y) space'''
                 pygame.draw.circle(screen, (0, 0, 255), [state[6],state[7]], 3)
                 pygame.display.flip()
-                # time.sleep(0.1)
+
+                # show trajectories with noise
+                time.sleep(0.1)
             print('Run intermediate goal: ', [state[6],state[7]], position_transform([state[6],state[7]]) )
             target_pos = TARGET_GOAL  # final goal
             # inter_joint_angles = target_joint_angles[:]
@@ -221,6 +224,7 @@ for ep in range(num_episodes):
             action =  action_rescale(action)
             state=get_state(start_joint_angles_,target_pos)
             # step_joint_angles=start_joint_angles_[:]
+
             for i in range (div_step+1):
                 action_noise = np.random.normal(0, noise_scale, action.shape[0])
                 action = action + action_noise  # noise injection for action
@@ -234,7 +238,9 @@ for ep in range(num_episodes):
                 ''' display the trajectory of data samples in real (x-y) space'''
                 pygame.draw.circle(screen, (0, 0, 255), [state[6],state[7]], 3)
                 pygame.display.flip()
-                # time.sleep(0.1)
+                
+                # show trajectories with noise
+                time.sleep(0.1)
             print('Run target goal: ', [state[6],state[7]],  position_transform([state[6],state[7]]) )
             train_set.append(episode_set)
             break

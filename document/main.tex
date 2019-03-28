@@ -339,11 +339,11 @@ We denote the modelling of a general policy in RL as $\mathcal{M}_g$, the modell
 \subsubsection{Reptile + PPO}
 
 \subsection{Off-Policy Reinforcement Learning with Demonstrations}
-We show different initialization strategies for efficient RL as above, and leveraging demonstrations for deep RL is an alternative approach to learn efficiently. Both initialization approach and leveraging demonstrations approach are taking advantages of the expert trajectories, however, they treat them differently. Instead of pre-training a policy to initialize the RL policy, the approach of leveraging demonstrations directly feeds those expert trajectories into memory of off-policy RL (e.g. DDPG) to make the policy trained with both demonstrations and explorations.
+We show different initialization strategies for efficient RL as above, and leveraging demonstrations for deep RL is an alternative approach to learn efficiently. Both initialization approach and leveraging demonstrations approach are taking advantages of the expert trajectories, however, they treat them differently. Instead of pre-training a policy to initialize the RL policy, the approach of leveraging demonstrations directly feeds those expert trajectories into memory of off-policy RL (e.g. DDPG), to train the policy with both demonstrations and explorations.
 
 We apply a more complicated environment for this experiment as shown in Fig. \ref{fig:ddpgfd0}, with two penalty areas. The optimal trajectories for the agent is to go through the middle of two penalty areas. And we generate good demonstrations by manually setting an intermediate goal position at the middle of two penalty areas.
 
-Experiment results of applying DDPG from demonstrations with different feeding approaches and vanilla DDPG are shown in Fig. \ref{fig:ddpgfd1}.  The prioritized experience replay is not used in this experiment. The feeded demonstration dataset contains totally 50 episodes (20 steps each episode) of trajectories, and each feeding operation is to feed the whole demonstrations dataset. It seems the more demonstrations feeded into the memory, the worst learning performance it is.
+Experiment results of applying DDPG from demonstrations with different sample-feeding approaches and vanilla DDPG are shown in Fig. \ref{fig:ddpgfd1}.  The prioritized experience replay is not used in this experiment. The feeded demonstration dataset contains totally 50 episodes (20 steps each episode) of trajectories, and each feeding operation is to feed the whole demonstrations dataset. It seems the more demonstrations feeded into the memory, the worst learning performance it is.
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.3]{img/ddpgfd_env.png}
@@ -351,11 +351,20 @@ Experiment results of applying DDPG from demonstrations with different feeding a
 	\label{fig:ddpgfd0}
 \end{figure}
 
+
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[scale=0.5]{img/ddpgfd1.pdf}
 	\caption{Comparison of DDPG from demonstrations with different feeding approaches (without prioritized experience replay) and vanilla DDPG. The blue line is feeding demonstrations for every epoch for the whole training process (500 epochs); the green line is feeding demonstrations for every epoch for the first 50 epochs; the yellow line is feeding demonstrations for every 50 epochs for the whole training process; the black line is feeding demonstrations for every 100 epochs for the whole training process; the red line is vanilla DDPG without using demonstrations. }
 	\label{fig:ddpgfd1}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[scale=0.5]{img/ddpgfd2.pdf}
+	\caption{Comparison of DDPG from demonstrations with different feeding approaches (without prioritized experience replay) and vanilla DDPG. The blue line is feeding demonstrations for every epoch for the whole training process (500 epochs); the green line is feeding demonstrations for every epoch for the first 50 epochs; the yellow line is feeding demonstrations for every 50 epochs for the whole training process; the black line is feeding demonstrations for every 100 epochs for the whole training process; the red line is vanilla DDPG without using demonstrations. }
+	\label{fig:ddpgfd2}
 \end{figure}
 
 
