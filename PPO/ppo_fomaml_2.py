@@ -6,7 +6,7 @@ from env_2 import Reacher_for2 as Reacher
 from copy import copy
 import argparse
 ITR=1000  # number of tasks
-EP_MAX = 20  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
+EP_MAX = 100  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
 EP_LEN = 20
 GAMMA = 0.9
 A_LR = 1e-4
@@ -18,7 +18,7 @@ S_DIM, A_DIM = 8,2
 METHOD = [
     dict(name='kl_pen', kl_target=0.01, lam=0.5),   # KL penalty
     dict(name='clip', epsilon=0.2),                 # Clipped surrogate objective, find this is better
-][0]        # choose the method for optimization
+][1]        # choose the method for optimization
 
 model_path='./fomaml_model/fomaml'
 
@@ -84,6 +84,7 @@ class PPO(object):
 
     def update(self, s, a, r):
         self.sess.run(self.update_oldpi_op)
+        print(r)
         adv = self.sess.run(self.advantage, {self.tfs: s, self.tfdc_r: r})
         adv = (adv - adv.mean())/(adv.std()+1e-6)     # sometimes helpful
 
@@ -127,9 +128,12 @@ class PPO(object):
     def choose_action(self, s):
         s = s[np.newaxis, :]
         a ,mu, sigma= self.sess.run([self.sample_op, self.mu, self.sigma], {self.tfs: s})
+        ''' set a sigma0 lower bound for exploration '''
+        sigma0 = 0.1
+        sigma = sigma + sigma0
         # print('s: ',s)
-        # print('a: ', a)
-        # print('mu, sigma: ', mu,sigma)
+        print('a: ', a)
+        print('mu, sigma: ', mu,sigma)
         return np.clip(a[0], -360, 360)
 
     def get_v(self, s):
@@ -293,6 +297,7 @@ if args.train:
 
 
         stepsize=stepsize0*(1-itr/ITR)  # decayed learning rate/step size, so not learn after several steps.
+        print('stepsize: ', stepsize)
         '''
         w' = w_before + (w_after-w_before) * stepsize ->
         w' = stepsize * w_after + (1-stepsize) * w_before

@@ -117,6 +117,7 @@ class MAML(object):
             meta_val_loss = self._loss_fn(meta_val_y, meta_val_output)
             meta_val_loss = tf.reduce_mean(meta_val_loss)
             meta_val_loss_list.append(meta_val_loss)
+            # print(weights, new_weights)  # {Variables}, {Tensors}
             # If perform multiple updates
             for _ in range(self._num_updates-1):
                 meta_train_output = self._contruct_forward(meta_train_x, new_weights,
