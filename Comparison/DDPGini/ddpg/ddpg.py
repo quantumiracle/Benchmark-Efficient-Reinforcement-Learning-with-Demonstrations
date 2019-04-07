@@ -32,7 +32,7 @@ def learn(save_path,network, env,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.2',        # large noise
         #   noise_type='normal_0.02',       # small noise
-          noise_type='normal_2.0',     
+          noise_type='normal_0.2',     
 
 
         
@@ -152,6 +152,7 @@ def learn(save_path,network, env,
     epoch_episode_steps = []
     epoch_actions = []
     epoch_qs = []
+    episode_end_distance=[]
     epoch_episodes = 0
     '''add this line to make non-initialized to be initialized'''
     agent.load_ini(sess,save_path)
@@ -191,6 +192,10 @@ def learn(save_path,network, env,
 
 
             epoch_episode_rewards.append(episode_reward)
+            if cycle == nb_epoch_cycles-1:
+                # record the distance from the end position of reacher to the goal for the last step of each episode
+                end_distance = 100.0/r-1
+                episode_end_distance.append(end_distance)
             '''
             step_set.append(t)
             reward_set=np.concatenate((reward_set,episode_reward))
@@ -277,10 +282,17 @@ def learn(save_path,network, env,
         mean_epoch_episode_rewards.append(np.mean(epoch_episode_rewards))
         # print(step_set,mean_epoch_episode_rewards)
         step_set.append(t)
+        plt.figure(1)
         plt.plot(step_set,mean_epoch_episode_rewards)
         plt.xlabel('Steps')
         plt.ylabel('Mean Episode Reward')
         plt.savefig('ddpg_mean.png')
+
+        plt.figure(2)
+        plt.plot(step_set, episode_end_distance)
+        plt.xlabel('Steps')
+        plt.ylabel('Distance to Target')
+        plt.savefig('ddpgini_distance.png')
         # plt.show()
 
         # Evaluation statistics.
@@ -322,6 +334,8 @@ def learn(save_path,network, env,
 
     print('stepset: ',step_set)
     print('rewards: ',mean_epoch_episode_rewards)
+    print('distances: ', np.array(episode_end_distance).reshape(-1))
+
     return agent
 
 

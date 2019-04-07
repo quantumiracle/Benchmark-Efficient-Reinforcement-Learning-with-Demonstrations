@@ -112,7 +112,7 @@ def position_transform(pos, screen_size = 1000.):
 ''' Parameters setting and Initialization '''
 # 2 obstacles
 screen_size=1000
-link_lengths = [0.2, 0.15, 0.1]  # These lengths are in world space (0 to 1), not screen space (0 to 1000)
+link_lengths = [0.2, 0.14, 0.1]  # These lengths are in world space (0 to 1), not screen space (0 to 1000)
 step_size = 0.1  # This is the gradient descent step taken when solving the inverse kinematics
 
 # target goal for screen 0-1000
@@ -142,7 +142,7 @@ reach_step = 50 # number of steps to reach each target
 div_step = 10 # number of steps divided for each goal trajectory, total step for each episode is 2*div_step as 2 goals for each episode
 train_set=[]
 
-data_file = open("data_memory2_2111steps.p","wb")  # one sample in file, with number of steps = 2*div_step
+data_file = open("data_memory2_21steps_large.p","wb")  # one sample in file, with number of steps = 2*div_step
 
 # use [:] to prevent copying pointer instead of copying the array, 
 # A=B (array), if A is changed with like += ,etc operations, will cause B to be changed!
@@ -153,7 +153,7 @@ sample_batch=0
 target_pos = INTER_GOAL  # initial goal
 
 noise_scale = 0.5  # choose noise range doesn't hurt the trajectory to be an expert one, action range 360;
-num_episodes = 50  # number of episode samples generated
+num_episodes = 1000  # 50, number of episode samples generated
 
 # another reacher used as generated demonstration trajectories running, 
 # the generated trajectories only contain state and action pairs, this one is 
@@ -182,20 +182,19 @@ for ep in range(num_episodes):
 
         # half of episode is to reach the intermediate goal
         if step  == reach_step-1:
-            print('Reach intermediate goal: ', target_pos)
+            # print('Reach intermediate goal: ', target_pos)
             target_joint_angles=joint_angles
             # print(target_joint_angles,start_joint_angles)
             action=(np.array(target_joint_angles)-np.array(start_joint_angles))/div_step
             action =  action_rescale(action)
             state=get_state(start_joint_angles,target_pos)
-            print('start state: ', state)
+            # print('start state: ', state)
             # step_joint_angles=start_joint_angles
 
             for i in range (div_step+1):
                 action_noise = np.random.normal(0, noise_scale, action.shape[0])
                 action = action + action_noise  # noise injection for action
                 new_state, reward, done = reacher.step([action])
-                print(reward)
                 # match the data dim in memory, state: (1,5), action: (1,3), new_state: (1,5), reward: (1,), done: (1,)
                 episode_set.append((np.array([state]), np.array([action]), reward, new_state, done)) 
                 # print((np.array([state]), np.array([action]), new_state, reward, done))
@@ -208,15 +207,15 @@ for ep in range(num_episodes):
                 pygame.display.flip()
 
                 # show trajectories with noise
-                time.sleep(0.1)
-            print('Run intermediate goal: ', [state[6],state[7]], position_transform([state[6],state[7]]) )
+                # time.sleep(0.1)
+            # print('Run intermediate goal: ', [state[6],state[7]], position_transform([state[6],state[7]]) )
             target_pos = TARGET_GOAL  # final goal
             # inter_joint_angles = target_joint_angles[:]
             inter_joint_angles = joint_angles[:]  # here use real joint_angles instead of intermediate target joint_angles for data feeding in ddpg memory
 
         # the left half episode is to reach the final goal 
         if step  == 2*reach_step-1:
-            print('Reach target goal: ', target_pos)
+            # print('Reach target goal: ', target_pos)
             start_joint_angles_=inter_joint_angles[:]
             target_joint_angles=joint_angles[:]
             # print(target_joint_angles,start_joint_angles)
@@ -229,7 +228,6 @@ for ep in range(num_episodes):
                 action_noise = np.random.normal(0, noise_scale, action.shape[0])
                 action = action + action_noise  # noise injection for action
                 new_state, reward, done = reacher.step([action])
-                print(reward)
                 episode_set.append((np.array([state]), np.array([action]), reward, new_state, done))
                 # step_joint_angles = step_joint_angles + action
                 # state=get_state(step_joint_angles,target_pos)
@@ -240,8 +238,8 @@ for ep in range(num_episodes):
                 pygame.display.flip()
                 
                 # show trajectories with noise
-                time.sleep(0.1)
-            print('Run target goal: ', [state[6],state[7]],  position_transform([state[6],state[7]]) )
+                # time.sleep(0.1)
+            # print('Run target goal: ', [state[6],state[7]],  position_transform([state[6],state[7]]) )
             train_set.append(episode_set)
             break
     

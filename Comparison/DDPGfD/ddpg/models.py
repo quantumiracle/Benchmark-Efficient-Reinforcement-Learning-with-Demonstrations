@@ -37,7 +37,8 @@ class Actor(Model):
             x = tf.layers.dense(x, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(minval=-3e-3, maxval=3e-3))
             # action scale 360 for 12 steps episode; using noise scale 2.0
             # x = 360*tf.nn.tanh(x)
-            x = 30*tf.nn.tanh(x)
+            # x = 30*tf.nn.tanh(x)
+            x_res = tf.nn.leaky_relu(x)
             # action scale 1 for 150 steps episode; using noise scale 0.8
             # x = tf.nn.tanh(x)
 

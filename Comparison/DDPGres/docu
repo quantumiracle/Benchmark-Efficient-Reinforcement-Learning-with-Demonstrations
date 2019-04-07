@@ -1,0 +1,8 @@
+ppo_0.py: origin multi-thread ppo
+ppo.py: ppo multi-thread for reacher
+ppo_single_0.py: origin single-thread ppo
+ppo_single.py: ppo single thread for reacher
+ppo_reptile: meta learning using reptile with ppo
+ppo_single_ini.py: ppo with initialized actor policy from ./ini
+
+env.py: reacher class

@@ -34,39 +34,79 @@ args = parser.parse_args()
 class PPO(object):
 
     def __init__(self):
-        config = tf.ConfigProto(log_device_placement=False, allow_soft_placement=True)
-        config.gpu_options.per_process_gpu_memory_fraction = 0.2
-        self.sess = tf.Session(config=config)
-        # self.sess = tf.Session()
+        # config = tf.ConfigProto(log_device_placement=False, allow_soft_placement=True)
+        # config.gpu_options.per_process_gpu_memory_fraction = 0.6
+        # self.sess = tf.Session(config=config)
+
+        # force cpu
+        # config = tf.ConfigProto(
+        # device_count = {'GPU': 0}
+        # )
+        # self.sess = tf.Session(config=config)
+        self.sess = tf.Session()
         self.tfs = tf.placeholder(tf.float32, [None, S_DIM], 'state')
         self.critic_weights = {}
         self.actor_weights = {}
         self.actor_weights_ = {}
         self.construct_weights()
-        self.forward(self.actor_weights, self.actor_weights_, self.critic_weights)
-        self.sess.run(tf.global_variables_initializer())
+        with tf.variable_scope('adam'):
+            self.actor_optimizer = tf.train.AdamOptimizer(A_LR)
+            self.critic_optimizer = tf.train.AdamOptimizer(C_LR)
+
+        with tf.variable_scope('actor_inputs/', reuse = tf.AUTO_REUSE):  # / force the name to be reused
+            self.tfa = tf.placeholder(tf.float32, [None, A_DIM], 'action')
+            self.tfadv = tf.placeholder(tf.float32, [None, 1], 'advantage')
+            self.tflam = tf.placeholder(tf.float32, None, 'lambda')
+
+
+        with tf.variable_scope('critic_inputs/', reuse = tf.AUTO_REUSE):        
+            self.tfdc_r = tf.placeholder(tf.float32, [None, 1], 'discounted_r')
+
+        self.first_forward_critic(self.critic_weights)
+        self.first_forward_actor(self.actor_weights, self.actor_weights_, self.critic_weights)
+        # self.sess.run(tf.global_variables_initializer())
         self.actor_var = [v for v in tf.trainable_variables() if v.name.split('/')[0] == "pi"]
         self.critic_var= [v for v in tf.trainable_variables() if v.name.split('/')[0] == "critic"]
-        
+
+
         tf.summary.FileWriter("log/", self.sess.graph)
-        
-    def forward(self, actor_weights, actor_weights_, critic_weights):
+    def first_forward_critic(self, critic_weights):
         '''
-        forward process, including loss function defination and optimization operations
+        define operations for the critic part
+        for the first time task-specific-update
         '''
         # critic
         with tf.variable_scope('critic'):
             # l1 = tf.layers.dense(self.tfs, 100, tf.nn.relu)
             # self.v = tf.layers.dense(l1, 1)
             self.v = self._build_cnet('critic', weights = critic_weights)
-            self.tfdc_r = tf.placeholder(tf.float32, [None, 1], 'discounted_r')
             self.advantage = self.tfdc_r - self.v
             self.closs = tf.reduce_mean(tf.square(self.advantage))
-            with tf.variable_scope('adam', reuse = tf.AUTO_REUSE):
-                self.ctrain_op = tf.train.AdamOptimizer(C_LR).minimize(self.closs)
+            self.ctrain_op = self.critic_optimizer.minimize(self.closs)
         self.critic_params = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='critic')
-        # print('cirtic params: ', self.critic_params)
 
+    def second_forward_critic(self, critic_weights):
+        '''
+        define operations for the critic part
+        for the second time meta-update
+        '''
+        # critic
+        with tf.variable_scope('critic'):
+            # l1 = tf.layers.dense(self.tfs, 100, tf.nn.relu)
+            # self.v = tf.layers.dense(l1, 1)
+            self.v_ = self._build_cnet('critic', weights = critic_weights)
+            self.advantage_ = self.tfdc_r - self.v_
+            self.closs_ = tf.reduce_mean(tf.square(self.advantage_))
+            self.ctrain_op_ = self.critic_optimizer.minimize(self.closs_)
+        self.critic_params_ = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, scope='critic')
+
+
+
+    def first_forward_actor(self, actor_weights, actor_weights_, critic_weights):
+        '''
+        define operations for the actor part
+        for the first time task-specific-update
+        '''
         # actor
         self.pi, self.pi_params = self._build_anet('pi', trainable=True, weights = actor_weights)
         oldpi, oldpi_params = self._build_anet('oldpi', trainable=False, weights = actor_weights_)
@@ -75,16 +115,12 @@ class PPO(object):
         with tf.variable_scope('update_oldpi'):
             self.update_oldpi_op = [oldp.assign(p) for p, oldp in zip(self.pi_params, oldpi_params)]
 
-
-        self.tfa = tf.placeholder(tf.float32, [None, A_DIM], 'action')
-        self.tfadv = tf.placeholder(tf.float32, [None, 1], 'advantage')
         with tf.variable_scope('loss'):
             with tf.variable_scope('surrogate'):
                 # ratio = tf.exp(pi.log_prob(self.tfa) - oldpi.log_prob(self.tfa))
                 ratio = self.pi.prob(self.tfa) / oldpi.prob(self.tfa)
                 surr = ratio * self.tfadv
             if METHOD['name'] == 'kl_pen':
-                self.tflam = tf.placeholder(tf.float32, None, 'lambda')
                 kl = tf.distributions.kl_divergence(oldpi, self.pi)
                 self.kl_mean = tf.reduce_mean(kl)
                 self.aloss = -(tf.reduce_mean(surr - self.tflam * kl))
@@ -96,8 +132,41 @@ class PPO(object):
             # entropy=pi.entropy()
             # self.aloss-=0.1*entropy
         with tf.variable_scope('atrain'):
-            with tf.variable_scope('adam', reuse = tf.AUTO_REUSE):
-                self.atrain_op = tf.train.AdamOptimizer(A_LR).minimize(self.aloss)
+            self.atrain_op = self.actor_optimizer.minimize(self.aloss)
+
+
+    def second_forward_actor(self, actor_weights, actor_weights_, critic_weights):
+        '''
+        define operations for the actor part
+        for the second time meta-update
+        '''
+        # actor
+        self.pi_, self.pi_params_ = self._build_anet('pi', trainable=True, weights = actor_weights)
+        oldpi_, oldpi_params_ = self._build_anet('oldpi', trainable=False, weights = actor_weights_)
+        with tf.variable_scope('sample_action'):
+            self.sample_op_ = tf.squeeze(self.pi_.sample(1), axis=0)       # choosing action
+        with tf.variable_scope('update_oldpi'):
+            self.update_oldpi_op_ = [oldp.assign(p) for p, oldp in zip(self.pi_params_, oldpi_params_)]
+
+        with tf.variable_scope('loss'):
+            with tf.variable_scope('surrogate'):
+                # ratio = tf.exp(pi.log_prob(self.tfa) - oldpi.log_prob(self.tfa))
+                ratio_ = self.pi_.prob(self.tfa) / oldpi_.prob(self.tfa)
+                surr_ = ratio_ * self.tfadv
+            if METHOD['name'] == 'kl_pen':
+                # self.tflam = tf.placeholder(tf.float32, None, 'lambda')
+                kl_ = tf.distributions.kl_divergence(oldpi_, self.pi_)
+                self.kl_mean_ = tf.reduce_mean(kl_)
+                self.aloss_ = -(tf.reduce_mean(surr_ - self.tflam * kl_))
+            else:   # clipping method, find this is better
+                self.aloss_ = -tf.reduce_mean(tf.minimum(
+                    surr_,
+                    tf.clip_by_value(ratio_, 1.-METHOD['epsilon'], 1.+METHOD['epsilon'])*self.tfadv))
+            # add entropy to boost exploration
+            # entropy=pi.entropy()
+            # self.aloss-=0.1*entropy
+        with tf.variable_scope('atrain'):
+            self.atrain_op_ = self.actor_optimizer.minimize(self.aloss_)
 
 
         
@@ -130,6 +199,7 @@ class PPO(object):
             self.actor_weights_['b2'] = tf.Variable(tf.truncated_normal([A_DIM], stddev = 0.1), trainable = False)
             self.actor_weights_['w3'] = tf.Variable(tf.truncated_normal([a_hidden1, A_DIM], stddev = 0.1), trainable = False)
             self.actor_weights_['b3'] = tf.Variable(tf.truncated_normal([A_DIM], stddev = 0.1), trainable = False)
+
             
 
 
@@ -138,13 +208,15 @@ class PPO(object):
         '''
         meta policy update
         '''
-        self.forward(self.new_a_weights, self.new_a_weights, self.new_c_weights)
-        self.sess.run(self.update_oldpi_op)
-        print(r)
-        adv = self.sess.run(self.advantage, {self.tfs: s, self.tfdc_r: r})
-        print(adv)
-        adv = (adv - adv.mean())/(adv.std()+1e-6)     # sometimes helpful
+        self.second_forward_actor(self.new_a_weights, self.new_a_weights, self.new_c_weights)
+        self.second_forward_critic(self.new_c_weights)
+        # self.forward(self.actor_weights, self.actor_weights_, self.critic_weights)
 
+        self.sess.run(self.update_oldpi_op)
+        adv = self.sess.run(self.advantage_, {self.tfs: s, self.tfdc_r: r})
+        print(adv.shape, adv.dtype)
+        adv = (adv - adv.mean())/(adv.std()+1e-6)     # sometimes helpful
+        print(a.shape, a.dtype)
         # update actor
         if METHOD['name'] == 'kl_pen':
             for i in range(A_UPDATE_STEPS):
@@ -160,16 +232,18 @@ class PPO(object):
                 METHOD['lam'] *= 2
             METHOD['lam'] = np.clip(METHOD['lam'], 1e-4, 10)    # sometimes explode, this clipping is my solution
         else:   # clipping method, find this is better (OpenAI's paper)
-            [self.sess.run(self.atrain_op, {self.tfs: s, self.tfa: a, self.tfadv: adv}) for _ in range(A_UPDATE_STEPS)]
+            [self.sess.run(self.atrain_op_, {self.tfs: s, self.tfa: a, self.tfadv: adv}) for _ in range(A_UPDATE_STEPS)]
         # print([v.name for v in self.critic_var],self.sess.run(self.critic_var))
         # update critic
-        [self.sess.run(self.ctrain_op, {self.tfs: s, self.tfdc_r: r}) for _ in range(C_UPDATE_STEPS)]
+        [self.sess.run(self.ctrain_op_, {self.tfs: s, self.tfdc_r: r}) for _ in range(C_UPDATE_STEPS)]
 
     def sum_gradients_update(self, s, a, r, stepsize):
         '''
-        task specific policy update, not directly update the weights but derive the new weights
+        task specific policy update, not directly update the weights but derive the new weights variables/dictionary
         '''
-        self.sess.run(self.update_oldpi_op)
+        # self.sess.run(self.update_oldpi_op)
+        # self.first_forward_actor(self.actor_weights, self.actor_weights_, self.critic_weights)
+        # self.first_forward_critic(self.critic_weights)
         adv = self.sess.run(self.advantage, {self.tfs: s, self.tfdc_r: r})
         adv = (adv - adv.mean())/(adv.std()+1e-6)     # sometimes helpful
 
@@ -273,9 +347,9 @@ class PPO(object):
         if s.ndim < 2: s = s[np.newaxis, :]
         return self.sess.run(self.v, {self.tfs: s})[0, 0]
     def save_model(self, ):
-        self.actor_weights=self.sess.run(self.actor_var)
-        self.critic_weights=self.sess.run(self.critic_var)
-        return self.actor_weights, self.critic_weights
+        actor_weights=self.sess.run(self.actor_var)
+        critic_weights=self.sess.run(self.critic_var)
+        return actor_weights, critic_weights
     # def value(self, ):
     #     return self.sess.run(self.actor_weights_before)[-1]
 
@@ -363,7 +437,7 @@ def meta_update(ppo):
 
 
 ppo = PPO()
-
+ppo.sess.run(tf.global_variables_initializer())
 if args.train:
 
     # env=Reacher(render=True)
@@ -400,7 +474,7 @@ if args.train:
                 s = s_
                 ep_r += r
 
-                # update ppo
+                # store samples in memory
                 if ((t+1) % BATCH == 0 or t == EP_LEN-1):
                     v_s_ = ppo.get_v(s_)
                     discounted_r = []

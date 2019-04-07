@@ -290,7 +290,7 @@ class DDPG(object):
                 self.obs_rms.update(np.array([obs0[b]]))
 
     def train(self):
-        demons_memory_ratio = 0.0  # the ratio of demonstrations over all batches sampled
+        demons_memory_ratio = 0.5  # the ratio of demonstrations over all batches sampled
         # Get a batch from memory
         batch = self.memory.sample(batch_size=int(2*self.batch_size*(1-demons_memory_ratio)))
         # Get a batch from demonstration buffer
@@ -333,7 +333,7 @@ class DDPG(object):
         })
         self.actor_optimizer.update(actor_grads, stepsize=self.actor_lr)
         self.critic_optimizer.update(critic_grads, stepsize=self.critic_lr)
-
+        # print('loss: ', actor_loss, critic_loss)
         return critic_loss, actor_loss
 
     def initialize(self, sess):

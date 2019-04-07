@@ -18,9 +18,9 @@ from a2c.utils import conv, fc, conv_to_fc, batch_to_seq, seq_to_batch
 
 
 
-save_file='./model/ini'
+save_file='./model/large/ini'
 # save_file='./model/ppo2'
-data_file = open("data_memory2_21steps.p","rb")
+data_file = open("data_memory2_21steps_large.p","rb")
 
 
 parser = argparse.ArgumentParser(description='Train or test neural net motor controller.')
@@ -116,7 +116,7 @@ hidden_layer=400
 
 #from common.models.py
 def network_fn(X):
-    num_layers=2
+    num_layers=4
     num_hidden=100
     # activation=tf.tanh
     activation=tf.nn.relu

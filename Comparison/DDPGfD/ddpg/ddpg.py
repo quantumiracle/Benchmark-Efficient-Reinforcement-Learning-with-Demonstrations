@@ -29,7 +29,7 @@ def learn(save_path, network, env,
           render_eval=False,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.8',
-          noise_type='normal_5.0',
+          noise_type='normal_2.0',
 
         #   noise_type='ou_0.9',
 
@@ -45,7 +45,7 @@ def learn(save_path, network, env,
           clip_norm=None,
           nb_train_steps=3, # per epoch cycle and MPI worker,  50
           nb_eval_steps=1,  #100
-          batch_size=64, # per MPI worker
+          batch_size=640, # per MPI worker
           tau=0.01,
           eval_env=None,
           param_noise_adaption_interval=3, #50
@@ -137,6 +137,7 @@ def learn(save_path, network, env,
     epoch_episode_steps = []
     epoch_actions = []
     epoch_qs = []
+    episode_end_distance = []
     epoch_episodes = 0
     ''' feeding the separate demonstration buffer with demonstration dataset '''
     agent.feed_demon_buffer()
@@ -180,6 +181,11 @@ def learn(save_path, network, env,
             epoch_episode_rewards.append(episode_reward)
 
             episode_reward = np.zeros(nenvs, dtype = np.float32) #vector
+
+            if cycle == nb_epoch_cycles-1:
+                # record the distance from the end position of reacher to the goal for the last step of each episode
+                end_distance = 100.0/r-1
+                episode_end_distance.append(end_distance)
 
             # Train.
             epoch_actor_losses = []
@@ -239,10 +245,17 @@ def learn(save_path, network, env,
         mean_epoch_episode_rewards.append(np.mean(epoch_episode_rewards))
         # print(step_set,mean_epoch_episode_rewards)
         step_set.append(t)
+        plt.figure(1)
         plt.plot(step_set,mean_epoch_episode_rewards)
         plt.xlabel('Steps')
         plt.ylabel('Mean Episode Reward')
         plt.savefig('ddpg_mean.png')
+
+        plt.figure(2)
+        plt.plot(step_set, episode_end_distance)
+        plt.xlabel('Steps')
+        plt.ylabel('Distance to Target')
+        plt.savefig('ddpgfd_distance.png')
         # plt.show()
 
         # Evaluation statistics.
@@ -284,6 +297,7 @@ def learn(save_path, network, env,
 
     print('stepset: ',step_set)
     print('rewards: ',mean_epoch_episode_rewards)
+    print('distances: ', np.array(episode_end_distance).reshape(-1))
     return agent
 
 
