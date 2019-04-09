@@ -18,9 +18,9 @@ from a2c.utils import conv, fc, conv_to_fc, batch_to_seq, seq_to_batch
 
 
 
-save_file='./model/large/ini'
+save_file='./model/small/ini'
 # save_file='./model/ppo2'
-data_file = open("data_memory2_21steps_large.p","rb")
+data_file = open("data_memory2_21steps.p","rb")
 
 
 parser = argparse.ArgumentParser(description='Train or test neural net motor controller.')

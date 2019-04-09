@@ -1,4 +1,5 @@
 import tensorflow as tf
+import tensorlayer as tl
 from common.models import get_network_builder
 
 def leakyrelu(x, alpha=0.3, max_value=None):  #alpha need set
@@ -75,8 +76,10 @@ class Actor(Model):
             x_res = tf.layers.dense(x_res, self.nb_actions, kernel_initializer=tf.zeros_initializer(), bias_initializer=tf.zeros_initializer())
             # x_res = tf.layers.dense(x_res, self.nb_actions)
 
-            # x_res=30*tf.tanh(x_res)
-            x_res = tf.nn.leaky_relu(x_res)
+            # x_res=1.0*tf.tanh(x_res)
+            # x_res = tf.nn.leaky_relu(x_res)
+            scale=0.2
+            x_res = tl.act.lrelu6(x_res)/6.0*scale # leakyrelu6 from tensorlayer 
             
         # x=x+0.0001*x_res
 

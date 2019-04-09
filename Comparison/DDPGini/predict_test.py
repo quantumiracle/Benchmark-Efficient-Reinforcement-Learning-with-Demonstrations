@@ -18,9 +18,9 @@ from a2c.utils import conv, fc, conv_to_fc, batch_to_seq, seq_to_batch
 
 
 
-save_file='./model/large/ini'
+save_file='./model/leakyrelu_small/ini'
 # save_file='./model/ppo2'
-data_file = open("data_memory2_21steps_large.p","rb")
+data_file = open("data_memory2_21steps.p","rb")
 
 
 parser = argparse.ArgumentParser(description='Train or test neural net motor controller.')
@@ -139,9 +139,11 @@ with tf.variable_scope('actor'):
     x = tf.layers.dense(x, num_output, kernel_initializer=tf.random_uniform_initializer(minval=-3e-3, maxval=3e-3))
 
     # range of output -360-360 
-    prediction=30*tf.tanh(x)
+    # prediction=30*tf.tanh(x)
 
-    # prediction = leakyrelu(x)
+    prediction = tf.nn.leaky_relu(x)
+
+
     # prediction=100*tf.tanh(x)
     # prediction = x
 

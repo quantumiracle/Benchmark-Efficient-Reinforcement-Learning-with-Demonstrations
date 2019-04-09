@@ -61,9 +61,6 @@ def train(args, extra_args,save_path):
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
 
-    # env = build_env(args)
-    # env = Traffic_env(grid_x,grid_y)
-    # reacher=Reacher(screen_size, link_lengths, joint_angles, target_pos)
     reacher=Reacher(screen_size, link_lengths, joint_angles)
     
     if args.network:
@@ -94,9 +91,7 @@ def test(args, extra_args, save_path):
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
 
-    # env = build_env(args)
-    # env = Traffic_env(grid_x,grid_y)
-    reacher=Reacher(screen_size, link_lengths, joint_angles, target_pos)
+    reacher=Reacher(screen_size, link_lengths, joint_angles)
     
     if args.network:
         alg_kwargs['network'] = args.network
@@ -128,10 +123,8 @@ def retrain(args, extra_args, save_path):
     alg_kwargs = get_learn_function_defaults(args.alg, env_type)
     alg_kwargs.update(extra_args)
 
-    # env = build_env(args)
-    # env = Traffic_env(grid_x,grid_y)
-    reacher=Reacher(screen_size, link_lengths, joint_angles, target_pos)
-    
+    reacher=Reacher(screen_size, link_lengths, joint_angles)
+
     if args.network:
         alg_kwargs['network'] = args.network
     else:
@@ -241,7 +234,7 @@ def main(args, extra_args,save_path):  #train
             if done:
                 obs = env.reset()
 
-        env.close()
+        # env.close()
 
 def main_test(args, extra_args,save_path):
     # configure logger, disable logging in child MPI processes (with rank > 0)
@@ -255,7 +248,7 @@ def main_test(args, extra_args,save_path):
 
     model, env = test(args, extra_args,save_path)
 
-    env.close()
+    # env.close()
 
 def main_retrain(args, extra_args,save_path):
     # configure logger, disable logging in child MPI processes (with rank > 0)
@@ -270,7 +263,7 @@ def main_retrain(args, extra_args,save_path):
     model, env = retrain(args, extra_args,save_path)
     model.save(save_path)
 
-    env.close()
+    # env.close()
 
 
 if __name__ == '__main__':

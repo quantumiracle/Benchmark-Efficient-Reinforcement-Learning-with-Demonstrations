@@ -484,7 +484,7 @@ class DDPG(object):
         #    print('actor_var:',actor_var_list)
            try:
                 actor_saver=tf.train.Saver(actor_var_list)
-                actor_saver.restore(self.sess, './model/large/ini')
+                actor_saver.restore(self.sess, './model/small/ini')
                 print('Actor Load Succeed!')
            except:
                 print('Actor Load Failed!')

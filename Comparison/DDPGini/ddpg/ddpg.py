@@ -32,7 +32,7 @@ def learn(save_path,network, env,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.2',        # large noise
         #   noise_type='normal_0.02',       # small noise
-          noise_type='normal_0.2',     
+          noise_type='normal_2.0',     
 
 
         
@@ -154,6 +154,7 @@ def learn(save_path,network, env,
     epoch_qs = []
     episode_end_distance=[]
     epoch_episodes = 0
+    SPARSE_REWARD = True
     '''add this line to make non-initialized to be initialized'''
     agent.load_ini(sess,save_path)
     for epoch in range(nb_epochs):
@@ -173,7 +174,11 @@ def learn(save_path,network, env,
                 action, q, _, _ = agent.step(obs, apply_noise=True, compute_Q=True)
                 # print('action:', action)
 
-                new_obs, r, done = env.step(action)
+                if SPARSE_REWARD:
+                    new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
+                else:
+                    new_obs, r, done = env.step(action)
+
 
                 t += 1
 
@@ -194,8 +199,12 @@ def learn(save_path,network, env,
             epoch_episode_rewards.append(episode_reward)
             if cycle == nb_epoch_cycles-1:
                 # record the distance from the end position of reacher to the goal for the last step of each episode
-                end_distance = 100.0/r-1
-                episode_end_distance.append(end_distance)
+                if SPARSE_REWARD：
+                    episode_end_distance.append(end_distance)
+                else:
+                    end_distance = 100.0/r-1
+                    episode_end_distance.append(end_distance[0])
+
             '''
             step_set.append(t)
             reward_set=np.concatenate((reward_set,episode_reward))
@@ -334,7 +343,7 @@ def learn(save_path,network, env,
 
     print('stepset: ',step_set)
     print('rewards: ',mean_epoch_episode_rewards)
-    print('distances: ', np.array(episode_end_distance).reshape(-1))
+    print('distances: ', episode_end_distance)
 
     return agent
 
@@ -469,7 +478,6 @@ def testing(save_path, network, env,
     epoch_episodes = 0
     for epoch in range(nb_epochs):
         print(nb_epochs)
-        # obs, env_state = env.reset()
         obs = env.reset()
         epoch_episode_rewards = []
 

@@ -53,7 +53,8 @@ class Actor(Model):
             x = tf.nn.relu(x)
             x = tf.layers.dense(x, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(minval=-3e-3, maxval=3e-3))
 
-            x=30*tf.tanh(x)
+            # x=30*tf.tanh(x)
+            x=tf.nn.leaky_relu(x)
             
 
 

@@ -17,7 +17,7 @@ class Reacher:
         self.link_lengths = link_lengths
         self.joint_angles = joint_angles
         self.num_actions=3  # equals to number of joints - 1
-        self.L = 8 # distance from target to get reward 2
+        self.L = 30 # distance from target to get reward 2
 
         # The main entry point
         self.screen = pygame.display.set_mode((self.screen_size, self.screen_size))
@@ -93,7 +93,7 @@ class Reacher:
         pos_set=self.draw_current_state()
         return np.array([np.concatenate((pos_set,self.target_pos))])
 
-    def step(self,action):    
+    def step(self,action, sparse_reward):    
         # Get events and check if the user has closed the window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -113,27 +113,33 @@ class Reacher:
         self.joint_angles[2] += action[0][2]
         # Draw the robot in its new state
         pos_set=self.draw_current_state()
-        # if abs(pos_set[6]-self.target_pos[0])<self.L and abs(pos_set[7]-self.target_pos[1])<self.L:
-        #     reward = 2
-        # else:
-        #     reward = 0
+        if sparse_reward:
+            '''sparse reward'''
+            distance2goal = np.sqrt((pos_set[6]-self.target_pos[0])**2+(pos_set[7]-self.target_pos[1])**2)
+            distance2obstacle1 = np.sqrt((pos_set[6]-self.obstacle1_pos[0])**2+(pos_set[7]-self.obstacle1_pos[1])**2)
+            distance2obstacle2 = np.sqrt((pos_set[6]-self.obstacle2_pos[0])**2+(pos_set[7]-self.obstacle2_pos[1])**2)
+            if distance2goal < self.L:
+                reward = 20
+            elif distance2obstacle1 < self.OBSTACLE_RADIUS or distance2obstacle2 < self.OBSTACLE_RADIUS:
+                reward = self.OBSTACLE_PANELTY
+            else:
+                reward = -1
+            return np.array([np.concatenate((pos_set,self.target_pos))]), np.array([reward]), np.array([False]), distance2goal
+        
+        else:    
+            '''dense reward'''
+            reward_0=100.0
+            reward = reward_0 / (np.sqrt((pos_set[6]-self.target_pos[0])**2+(pos_set[7]-self.target_pos[1])**2)+1)
+            if np.sqrt((pos_set[6]-self.obstacle1_pos[0])**2+(pos_set[7]-self.obstacle1_pos[1])**2) < self.OBSTACLE_RADIUS:
+                reward += self.OBSTACLE_PANELTY
+                print('-5!')
+            if np.sqrt((pos_set[6]-self.obstacle2_pos[0])**2+(pos_set[7]-self.obstacle2_pos[1])**2) < self.OBSTACLE_RADIUS:
+                reward += self.OBSTACLE_PANELTY
+                print('-5!')
 
-        # reward_0=1000
-        # reward = reward_0 * np.exp(-np.sqrt(abs(pos_set[6]-self.target_pos[0])**2+abs(pos_set[7]-self.target_pos[1])**2))
-        # print(reward) #e-100
-
-        reward_0=100.0
-        reward = reward_0 / (np.sqrt((pos_set[6]-self.target_pos[0])**2+(pos_set[7]-self.target_pos[1])**2)+1)
-        if np.sqrt((pos_set[6]-self.obstacle1_pos[0])**2+(pos_set[7]-self.obstacle1_pos[1])**2) < self.OBSTACLE_RADIUS:
-            reward += self.OBSTACLE_PANELTY
-            print('-5!')
-        if np.sqrt((pos_set[6]-self.obstacle2_pos[0])**2+(pos_set[7]-self.obstacle2_pos[1])**2) < self.OBSTACLE_RADIUS:
-            reward += self.OBSTACLE_PANELTY
-            print('-5!')
-
-        # time.sleep(0.3)
-        # 10 dim return
-        return np.array([np.concatenate((pos_set,self.target_pos))]), np.array([reward]), np.array([False])
+            # time.sleep(0.3)
+            # 10 dim return
+            return np.array([np.concatenate((pos_set,self.target_pos))]), np.array([reward]), np.array([False])
 
 
 if __name__ == "__main__":

@@ -32,7 +32,7 @@ def learn(save_path,network, env,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.5',        # large noise
         #   noise_type='normal_0.02',       # small noise
-          noise_type='normal_0.5',      
+          noise_type='normal_0.2',      
         #   noise_type='ou_0.9',
 
 
@@ -160,6 +160,7 @@ def learn(save_path,network, env,
     epoch_qs = []
     episode_end_distance = []
     epoch_episodes = 0
+    SPARSE_REWARD = False
     '''add this line to make non-initialized to be initialized'''
     agent.load_ini(sess,save_path)
     preheating_step= 30 #50 episode = 600 steps, 12 steps per episode
@@ -169,7 +170,6 @@ def learn(save_path,network, env,
     noise_factor_value=5 # 10
     for epoch in range(nb_epochs):
         print('epochs: ',epoch)
-        # obs, env_state = env.reset()
         obs = env.reset()
         agent.save(save_path)
         epoch_episode_rewards=[]
@@ -185,7 +185,10 @@ def learn(save_path,network, env,
                 action,action_res, q, _, _ = agent.step(obs, noise_factor, apply_noise=True, compute_Q=True )
                 # print(action, action_res)
                 action = np.array(action) + np.array(action_res)
-                new_obs, r, done = env.step(action)
+                if SPARSE_REWARD:
+                    new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
+                else:
+                    new_obs, r, done= env.step(action, SPARSE_REWARD)
                 t += 1
                 episode_reward += r
                 episode_step += 1
@@ -220,8 +223,14 @@ def learn(save_path,network, env,
 
             if cycle == nb_epoch_cycles-1:
                 # record the distance from the end position of reacher to the goal for the last step of each episode
-                end_distance = 100.0/r-1
-                episode_end_distance.append(end_distance)
+                
+
+                if SPARSE_REWARD:
+                    episode_end_distance.append(end_distance)
+                else:
+                    end_distance = 100.0/r-1
+                    episode_end_distance.append(end_distance[0])
+
 
             epoch_actor_losses = []
             epoch_critic_losses = []
@@ -344,7 +353,7 @@ def learn(save_path,network, env,
 
     print('stepset: ',step_set)
     print('rewards: ',mean_epoch_episode_rewards)
-    print('distances: ', np.array(episode_end_distance).reshape(-1))
+    print('distances: ', episode_end_distance)
 
     return agent
 
@@ -477,6 +486,7 @@ def testing(save_path, network, env,
     epoch_actions = []
     epoch_qs = []
     epoch_episodes = 0
+    noise_factor=1.
     for epoch in range(nb_epochs):
         print(nb_epochs)
         # obs, env_state = env.reset()
@@ -487,9 +497,9 @@ def testing(save_path, network, env,
 
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
-                '''no noise for test'''
-                action, q, _, _ = agent.step(obs, apply_noise=False, compute_Q=True)
-                # print('action:', action)
+                action,action_res, q, _, _ = agent.step(obs, noise_factor, apply_noise=True, compute_Q=True )
+                # print(action, action_res)
+                action = np.array(action) + np.array(action_res)
 
                 new_obs, r, done = env.step(action)
 
@@ -500,10 +510,10 @@ def testing(save_path, network, env,
                 # print('episode_re: ', episode_reward) #[1.]
 
                 # Book-keeping.
-                epoch_actions.append(action)
+                epoch_actions.append(action_res)
                 epoch_qs.append(q)
                 b=1.
-                agent.store_transition(obs, action, r, new_obs, done) #the batched data will be unrolled in memory.py's append.
+                agent.store_transition(obs, action_res, r, new_obs, done) #the batched data will be unrolled in memory.py's append.
                 # print('r: ', r)
                 # '''r shape: (1,)'''
                 obs = new_obs

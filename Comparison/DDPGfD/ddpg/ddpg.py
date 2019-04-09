@@ -141,7 +141,7 @@ def learn(save_path, network, env,
     epoch_episodes = 0
     ''' feeding the separate demonstration buffer with demonstration dataset '''
     agent.feed_demon_buffer()
-
+    SPARSE_REWARD = True
     for epoch in range(nb_epochs):
         print(nb_epochs)
         # obs, env_state = env.reset()
@@ -163,8 +163,10 @@ def learn(save_path, network, env,
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
                 action, q, _, _ = agent.step(obs, apply_noise=True, compute_Q=True)
-
-                new_obs, r, done = env.step(action)
+                if SPARSE_REWARD:
+                    new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
+                else: 
+                    new_obs, r, done = env.step(action, SPARSE_REWARD)
                 t += 1
 
                 episode_reward += r
@@ -184,8 +186,11 @@ def learn(save_path, network, env,
 
             if cycle == nb_epoch_cycles-1:
                 # record the distance from the end position of reacher to the goal for the last step of each episode
-                end_distance = 100.0/r-1
-                episode_end_distance.append(end_distance)
+                if SPARSE_REWARD:
+                    episode_end_distance.append(end_distance)
+                else:
+                    end_distance = 100.0/r-1
+                    episode_end_distance.append(end_distance[0])
 
             # Train.
             epoch_actor_losses = []
@@ -297,7 +302,7 @@ def learn(save_path, network, env,
 
     print('stepset: ',step_set)
     print('rewards: ',mean_epoch_episode_rewards)
-    print('distances: ', np.array(episode_end_distance).reshape(-1))
+    print('distances: ', episode_end_distance)
     return agent
 
 
