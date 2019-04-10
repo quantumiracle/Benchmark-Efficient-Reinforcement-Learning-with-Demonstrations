@@ -430,6 +430,7 @@ def testing(save_path, network, env,
     epoch_actions = []
     epoch_qs = []
     epoch_episodes = 0
+    SPARSE_REWARD=False
     for epoch in range(nb_epochs):
         print(nb_epochs)
         obs = env.reset()
@@ -442,8 +443,10 @@ def testing(save_path, network, env,
                 '''no noise for test'''
                 action, q, _, _ = agent.step(obs, apply_noise=False, compute_Q=True)
 
-                '''actually no need for env_state: in or out'''
-                new_obs, r, done = env.step(action)
+                if SPARSE_REWARD:
+                    new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
+                else: 
+                    new_obs, r, done = env.step(action, SPARSE_REWARD)
 
                 t += 1
 

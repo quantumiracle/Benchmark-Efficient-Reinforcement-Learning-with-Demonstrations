@@ -177,7 +177,7 @@ def learn(save_path,network, env,
                 if SPARSE_REWARD:
                     new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
                 else:
-                    new_obs, r, done = env.step(action)
+                    new_obs, r, done = env.step(action, SPARSE_REWARD)
 
 
                 t += 1
@@ -204,19 +204,6 @@ def learn(save_path,network, env,
                 else:
                     end_distance = 100.0/r-1
                     episode_end_distance.append(end_distance[0])
-
-            '''
-            step_set.append(t)
-            reward_set=np.concatenate((reward_set,episode_reward))
-            # print(step_set,reward_set)
-            # print(t, episode_reward)
-            
-            plt.plot(step_set,reward_set)
-            plt.xlabel('Steps')
-            plt.ylabel('Episode Reward')
-            plt.savefig('ddpg.png')
-            plt.show()
-            '''
 
             episode_reward = np.zeros(nenvs, dtype = np.float32) #vector
 
@@ -476,6 +463,7 @@ def testing(save_path, network, env,
     epoch_actions = []
     epoch_qs = []
     epoch_episodes = 0
+    SPARSE_REWARD=True
     for epoch in range(nb_epochs):
         print(nb_epochs)
         obs = env.reset()
@@ -489,7 +477,10 @@ def testing(save_path, network, env,
                 '''no noise for test'''
                 action, q, _, _ = agent.step(obs, apply_noise=False, compute_Q=True)
 
-                new_obs, r, done = env.step(action)
+                if SPARSE_REWARD:
+                    new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
+                else:
+                    new_obs, r, done = env.step(action, SPARSE_REWARD)
 
                 t += 1
 

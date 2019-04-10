@@ -487,6 +487,7 @@ def testing(save_path, network, env,
     epoch_qs = []
     epoch_episodes = 0
     noise_factor=1.
+    SPARSE_REWARD=True
     for epoch in range(nb_epochs):
         print(nb_epochs)
         # obs, env_state = env.reset()
@@ -498,17 +499,16 @@ def testing(save_path, network, env,
             for t_rollout in range(nb_rollout_steps):
                 # Predict next action.
                 action,action_res, q, _, _ = agent.step(obs, noise_factor, apply_noise=True, compute_Q=True )
-                # print(action, action_res)
                 action = np.array(action) + np.array(action_res)
 
-                new_obs, r, done = env.step(action)
-
+                if SPARSE_REWARD:
+                    new_obs, r, done, end_distance = env.step(action, SPARSE_REWARD)
+                else:
+                    new_obs, r, done= env.step(action, SPARSE_REWARD)
                 t += 1
-
                 episode_reward += r
                 episode_step += 1
                 # print('episode_re: ', episode_reward) #[1.]
-
                 # Book-keeping.
                 epoch_actions.append(action_res)
                 epoch_qs.append(q)
@@ -532,7 +532,6 @@ def testing(save_path, network, env,
                 #         if nenvs == 1:
                 #             agent.reset()
 
-            '''added'''                
             epoch_episode_rewards.append(episode_reward)
             '''
             step_set.append(t)
