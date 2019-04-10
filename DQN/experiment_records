@@ -1,7 +1,0 @@
-11.24:
-ddpg version code original actor and critic has only one dense layer, without hidden layer; adding one hidden layer makes it harder to converge to orginal goal, which is one reward point only.
-
-对更复杂的reward, 像加两个penalty points的， 没有hidden layer的算法无法学出最优解，无论用哪种noise；而加一层hidden后，整个学习曲线非常平滑，似乎noise作用相对减弱，仍旧很难学到全局最优 
-
-the shaking of its motion is caused by noise, larger noise range, larger shaking. The better action comes from its shaking range of motion.
-
