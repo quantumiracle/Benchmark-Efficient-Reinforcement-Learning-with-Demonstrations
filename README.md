@@ -41,19 +41,19 @@ Compare present methods for more efficient and robust RL training, including:
 
 ### Efficient RL:
 
-1. **Policy Replacement (Behavior Cloning)**`./DDPG_Inverse`:
+1. **Policy Replacement (Behavior Cloning)** in `./DDPG_Inverse`:
 
 * Train an initialization policy for RL (DDPG) via supervised learning with samples generated from inverse kinematics (already generated).
 
-2. **Feeding Demonstrations into Memory Buffer**`./DDPGfD`:
+2. **Feeding Demonstrations into Memory Buffer** in `./DDPGfD`:
 
 - DDPGfD codes are training DDPG to learn from demonstrations, feeding demonstration trajectories directly into memory (a separate one) for training.
 
-3. **Residual Policy Learning** `./RPL_DDPG_new/`:
+3. **Residual Policy Learning** in `./RPL_DDPG_new/`:
 
 * Train a residual policy with RL (DDPG) on top of a pre-trained initialization policy via supervised learning with samples generated from inverse kinematics (already generated).
 
-4. **Meta-Learning and Policy Replacement with PPO**`./PPO`:
+4. **Meta-Learning and Policy Replacement with PPO** in `./PPO`:
 
 * Implementations of PPO algorithm with Reacher environment, including PPO for Reacher of 2/3 joints;
 * PPO with initialized policy;
