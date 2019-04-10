@@ -69,8 +69,10 @@ Compare present methods for more efficient and robust RL training, including:
 
 **Dense Reward:**
 
-<img src="https://github.com/quantumiracle/Reinforcement-Learning-for-Robotics/blob/master/img/3000step41.pdf" width="80%">
+<p align="center">
+<img src="https://github.com/quantumiracle/Reinforcement-Learning-for-Robotics/blob/master/img/3000step41.png" width="80%">
 
 **Sparse Reward:**
 
-<img src="https://github.com/quantumiracle/Reinforcement-Learning-for-Robotics/blob/master/img/3000step_sparse2.pdf" width="80%">
+<p align="center">
+<img src="https://github.com/quantumiracle/Reinforcement-Learning-for-Robotics/blob/master/img/3000step_sparse2.png" width="80%">
