@@ -66,3 +66,11 @@ Compare present methods for more efficient and robust RL training, including:
 `./Comparison`:
 
 * Comparison of different methods with demonstrations for efficient reinforcement learning (DDPG), including policy replacement (`./Comparison/DDPGini/`), residual policy learning (`./Comparison/DDPGres/`), directly feeding demonstrations (demonstration ratio: 0.5, (`./Comparison/DDPGfD/`)) into the buffer and vanilla DDPG.
+
+**Dense Reward:**
+
+<img src="https://github.com/quantumiracle/Reinforcement-Learning-for-Robotics/blob/master/img/3000step41.pdf" width="80%">
+
+**Sparse Reward:**
+
+<img src="https://github.com/quantumiracle/Reinforcement-Learning-for-Robotics/blob/master/img/3000step_sparse2.pdf" width="80%">
