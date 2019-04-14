@@ -1,4 +1,4 @@
-# Reinforcement-Learning-for-Robotics
+# Benchmark Efficient Reinforcement Learning with/without Demonstrations
 Efficient reinforcement learning for robotics control in simulation (_Reacher_ Environment).
 
 Compare present methods for more efficient and robust RL training, including:
