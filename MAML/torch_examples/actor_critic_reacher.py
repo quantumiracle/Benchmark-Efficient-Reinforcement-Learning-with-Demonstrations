@@ -72,7 +72,7 @@ def select_action(state):
     mu, scale, state_value = model(state)
     action_dis = Normal(loc=mu, scale=scale.squeeze())
     action = action_dis.sample().squeeze()
-    model.saved_actions.append(SavedAction(action_dis.log_prob(action).squeeze(), state_value))
+    model.saved_actions.append(SavedAction(action_dis.log_prob(action).squeeze(), state_value.squeeze()))
     return action.numpy()
 
 

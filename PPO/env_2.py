@@ -5,7 +5,7 @@ import time
 from gym.spaces.box import Box
 
 class Reacher_for2:
-    def __init__(self, screen_size=1000, link_lengths = [200, 140], joint_angles=[0, 0], target_pos = [669,430], render=False):
+    def __init__(self, screen_size=1000, link_lengths = [200, 140], joint_angles=[0, 0], target_pos = [369,430], render=False):
         # Global variables
         self.screen_size = screen_size
         self.link_lengths = link_lengths

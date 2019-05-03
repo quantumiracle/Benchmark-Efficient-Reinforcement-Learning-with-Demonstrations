@@ -1,0 +1,2 @@
+model_checkpoint_path: "meta"
+all_model_checkpoint_paths: "meta"

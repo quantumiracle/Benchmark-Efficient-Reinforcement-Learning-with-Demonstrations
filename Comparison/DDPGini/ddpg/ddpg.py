@@ -199,7 +199,7 @@ def learn(save_path,network, env,
             epoch_episode_rewards.append(episode_reward)
             if cycle == nb_epoch_cycles-1:
                 # record the distance from the end position of reacher to the goal for the last step of each episode
-                if SPARSE_REWARD：
+                if SPARSE_REWARD:
                     episode_end_distance.append(end_distance)
                 else:
                     end_distance = 100.0/r-1

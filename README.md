@@ -58,8 +58,10 @@ Compare present methods for more efficient and robust RL training, including:
 * Implementations of PPO algorithm with Reacher environment, including PPO for Reacher of 2/3 joints;
 * PPO with initialized policy;
 * PPO+Reptile;
-*  PPO+MAML;
-*  PPO+FOMAML (first-order MAML), etc.
+* PPO+MAML;
+* PPO+FOMAML (first-order MAML), etc.
+
+5. **Meta-Learning** in `./MAML`:
 
 ### Comparison:
 

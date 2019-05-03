@@ -5,8 +5,8 @@ import gym
 from env_2 import Reacher_for2 as Reacher
 from copy import copy
 import argparse
-ITR=1000  # number of tasks
-EP_MAX = 20  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
+ITR=10  # number of tasks
+EP_MAX = 1000  # for single task, generally 2000 steps for 2 joints and 5000 steps for 3 joints have a good performance
 EP_LEN = 20
 GAMMA = 0.9
 A_LR = 1e-4
@@ -112,11 +112,12 @@ class PPO(object):
             l1 = tf.layers.dense(self.tfs, 100, tf.nn.relu, trainable=trainable)
             # l1 = tf.layers.batch_normalization(tf.layers.dense(self.tfs, 100, tf.nn.relu, trainable=trainable), training=True)
             '''the action mean mu is set to be scale 10 instead of 360, avoiding useless shaking and one-step to goal!'''
-            mu =  10.*tf.layers.dense(l1, A_DIM, tf.nn.tanh, trainable=trainable)
+            # mu =  10.*tf.layers.dense(l1, A_DIM, tf.nn.tanh, trainable=trainable)
+            mu = tf.layers.dense(l1, A_DIM, tf.nn.leaky_relu, trainable=trainable)
             sigma = tf.layers.dense(l1, A_DIM, tf.nn.sigmoid, trainable=trainable) # softplus to make it positive
             # sigma = tf.layers.dense(l1, A_DIM, tf.nn.softplus, trainable=trainable) # softplus to make it positive
             # in case that sigma is 0
-            sigma +=1e-4
+            sigma +=5e-1
             self.mu=mu
             self.sigma=sigma
             norm_dist = tf.distributions.Normal(loc=mu, scale=sigma)
@@ -190,7 +191,12 @@ class PPO(object):
 
 def sample_task():
     range_pose=0.3
-    target_pose=(2*np.random.rand(2)-1)*range_pose + [0.5, 0.5]
+    # move 2 random digits in [0,1] to [-range_pose, +range_pose]; center of screen is [0.5, 0.5]
+    #target_pose=(2*np.random.rand(2)-1)*range_pose + [0.5, 0.5]  
+    
+    # a sub-task domain with target positions in the first session
+    target_pose=range_pose*np.random.rand(2) + [0.5,0.5]
+
     screen_size=1000
     target_pose=target_pose*screen_size
 
@@ -327,7 +333,7 @@ if args.test:
     stepsize0=0.1
     test_env, t=sample_task()
     all_ep_r = []
-    ppo.load(model_path)
+    # ppo.load(model_path)
     print('-------------- TEST --------------- ')
     for ep in range(EP_MAX):
         print('Episode: ', ep)
@@ -363,15 +369,16 @@ if args.test:
         all_ep_r.append(ep_r)
         # if ep == 0: all_ep_r.append(ep_r)
         # else: all_ep_r.append(all_ep_r[-1]*0.9 + ep_r*0.1)
-        # print(
-        #     'Ep: %i' % ep,
-        #     "|Ep_r: %i" % ep_r,
-        #     ("|Lam: %.4f" % METHOD['lam']) if METHOD['name'] == 'kl_pen' else '',
-        # )
+        print(
+            'Ep: %i' % ep,
+            "|Ep_r: %.2f" % ep_r,
+            ("|Lam: %.4f" % METHOD['lam']) if METHOD['name'] == 'kl_pen' else '',
+        )
         # if ep % 500==0:
         #     plt.plot(np.arange(len(all_ep_r)), all_ep_r)
         #     plt.xlabel('Episode');plt.ylabel('Moving averaged episode reward');plt.savefig('./ppo_reptile.png')
     # restore before test
 
     plt.plot(np.arange(len(all_ep_r)), all_ep_r)
+    print(np.arange(len(all_ep_r)), all_ep_r)
     plt.savefig('./ppo_reptile_test.png')
