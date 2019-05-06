@@ -32,7 +32,7 @@ def learn(save_path,network, env,
         #   noise_type='adaptive-param_0.2',
         #   noise_type='normal_0.5',        # large noise
         #   noise_type='normal_0.02',       # small noise
-          noise_type='normal_0.2',      
+          noise_type='normal_2',      
         #   noise_type='ou_0.9',
 
 
@@ -162,8 +162,8 @@ def learn(save_path,network, env,
     epoch_episodes = 0
     SPARSE_REWARD = False
     '''add this line to make non-initialized to be initialized'''
-    agent.load_ini(sess,save_path)
-    preheating_step= 30 #50 episode = 600 steps, 12 steps per episode
+    # agent.load_ini(sess,save_path)
+    preheating_step= 0 #50 episode = 600 steps, 12 steps per episode
 
     # considering the action values with fiexed weights of nn are relatively fixed, 
     # wanna apply large noise for critic training (preheating) and regular noise for RL training

@@ -287,9 +287,9 @@ Inverse kinematics is a inverse process of forward kinematics, to derive the joi
 \begin{equation}
  (x_{end}, y_{end}) = \mathcal{T}(\theta, L)
 \end{equation}
-while the inverse kinematics needs the Jacobian of end position with respect to the joint angles parameters $\{\theta_i\}$, and to reach a specific target position $(x_T, y_T)$, the expected change of angle values are:
+while the inverse kinematics needs the Jacobian of end position with respect to the joint angles parameters $\{\theta_i\}$, and to reach a specific target position $(x_T, y_T)$ from $(x_{end}, y_{end})$, the expected change of angle values are:
 \begin{equation}
-	(\Delta(x_{end}), \Delta(y_{end})) = \alpha (\frac{\partial(\mathcal{T}(\theta, \L))}{\partial \theta})^{-1} \cdot (x_T, y_T)
+	\Delta \theta = \alpha (\frac{\partial(\mathcal{T}(\theta, \L))}{\partial \theta})^{-1} \cdot [(x_T, y_T)-(x_{end}, y_{end})]
 \end{equation}
 where $\alpha$ is the step size. 
 

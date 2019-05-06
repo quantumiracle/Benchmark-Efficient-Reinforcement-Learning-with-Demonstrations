@@ -74,12 +74,12 @@ class Actor(Model):
             x_res = tf.nn.relu(x_res)
             # x_res = tf.layers.dense(x_res, self.nb_actions, kernel_initializer=tf.random_uniform_initializer(), bias_initializer=tf.random_uniform_initializer())
             x_res = tf.layers.dense(x_res, self.nb_actions, kernel_initializer=tf.zeros_initializer(), bias_initializer=tf.zeros_initializer())
-            # x_res = tf.layers.dense(x_res, self.nb_actions)
 
-            # x_res=1.0*tf.tanh(x_res)
+            scale=0.5
+            x_res=scale*tf.tanh(x_res)
             # x_res = tf.nn.leaky_relu(x_res)
-            scale=0.2
-            x_res = tl.act.lrelu6(x_res)/6.0*scale # leakyrelu6 from tensorlayer, bound the value range
+            
+            # x_res = tl.act.lrelu6(x_res)/6.0*scale # leakyrelu6 from tensorlayer, bound the value range
             
         # x=x+0.0001*x_res
 

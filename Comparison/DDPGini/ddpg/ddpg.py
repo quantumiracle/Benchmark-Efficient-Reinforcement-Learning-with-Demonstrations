@@ -154,7 +154,7 @@ def learn(save_path,network, env,
     epoch_qs = []
     episode_end_distance=[]
     epoch_episodes = 0
-    SPARSE_REWARD = True
+    SPARSE_REWARD = False
     '''add this line to make non-initialized to be initialized'''
     agent.load_ini(sess,save_path)
     for epoch in range(nb_epochs):
