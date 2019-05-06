@@ -14,6 +14,10 @@ Compare present methods for more efficient and robust RL training, including:
 
 * Pytorch & Tensorflow
 
+## Document:
+[Full Document](https://github.com/quantumiracle/Benchmark-Efficient-Reinforcement-Learning-with-Demonstrations/blob/master/document/ISO_final.pdf)
+
+[PPT](https://github.com/quantumiracle/Benchmark-Efficient-Reinforcement-Learning-with-Demonstrations/blob/master/document/PPT/ISO_pre.pptx)
 ## Benchmarks:
 
 * DDPG, PPO for Reacher Environment in simulation
