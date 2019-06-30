@@ -8,6 +8,9 @@ Compare present methods for more efficient and robust RL training, including:
 * DDPG from Demonstrations;
 * Reptile, MAML (across tasks);
 
+Project Development:
+![gif](https://github.com/quantumiracle/Benchmark-Efficient-Reinforcement-Learning-with-Demonstrations/blob/master/gif-1.gif)
+
 ## To Run:
 
 * Python 3.5
