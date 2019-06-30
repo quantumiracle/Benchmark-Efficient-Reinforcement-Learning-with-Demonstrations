@@ -182,4 +182,4 @@ for ep in range(EP_MAX):
     )
     if ep % 500==0:
         plt.plot(np.arange(len(all_ep_r)), all_ep_r)
-        plt.xlabel('Episode');plt.ylabel('Moving averaged episode reward');plt.savefig('./ppo_single.png')
+plt.xlabel('Episode');plt.ylabel('Moving averaged episode reward');plt.savefig('./ppo_single.png')
